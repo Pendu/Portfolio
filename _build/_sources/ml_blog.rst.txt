@@ -1,0 +1,7 @@
+.. _ml_blog:
+
+Technical Blog Posts 
+
+
+Machine learning Math
+

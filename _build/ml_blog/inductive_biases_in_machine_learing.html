@@ -1,0 +1,734 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Inductive Biases of ML Models &#8212; Personal Website</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml_blog/inductive_biases_in_machine_learing';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/home_icon.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/home_icon.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Home</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../work_experience.html">
+    Work Experience
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../research.html">
+    Research
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activities.html">
+    Activities
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cv.html">
+    CV
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="ml_blog.html">
+    ML Blog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../book_reviews/book_reviews.html">
+    Book Reviews
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../work_experience.html">
+    Work Experience
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../research.html">
+    Research
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../activities.html">
+    Activities
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../cv.html">
+    CV
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="ml_blog.html">
+    ML Blog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../book_reviews/book_reviews.html">
+    Book Reviews
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Inductive Biases of ML Models</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="inductive-biases-of-ml-models">
+<span id="inductive-biases-in-machine-learning"></span><h1>Inductive Biases of ML Models<a class="headerlink" href="#inductive-biases-of-ml-models" title="Link to this heading">#</a></h1>
+<section id="preface-assumptions-vs-inductive-bias">
+<h2>Preface: Assumptions vs. Inductive Bias<a class="headerlink" href="#preface-assumptions-vs-inductive-bias" title="Link to this heading">#</a></h2>
+<p>This guide is dedicated to the <em>inductive biases</em> of models, which are distinct from, yet complementary to, the formal <em>assumptions</em> discussed previously. It is helpful to think of the distinction as follows:</p>
+<ul class="simple">
+<li><p><strong>The “Assumptions” Guide</strong> is like a <strong>mechanic’s checklist</strong>. It details the formal, often statistical, conditions that must be met for a model to be statistically valid and for its theoretical guarantees (like being unbiased) to hold. It answers the question: <em>“What conditions must my data satisfy for this model to work as designed?”</em></p></li>
+<li><p><strong>The “Inductive Bias” Guide</strong> is like a <strong>designer’s philosophy</strong>. It explains <em>why</em> a model was designed in a particular way and describes its inherent “beliefs” about the world that guide its learning process. It answers the question: <em>“What kind of patterns is this model built to find, and why is it better for certain problems than others?”</em></p></li>
+</ul>
+<p>A deep understanding requires both perspectives: the philosophical ‘why’ (inductive bias) and the practical ‘how-to-validate’ (assumptions).</p>
+</section>
+<section id="general-concepts">
+<h2>General Concepts<a class="headerlink" href="#general-concepts" title="Link to this heading">#</a></h2>
+<section id="what-is-inductive-bias">
+<h3>What is Inductive Bias?<a class="headerlink" href="#what-is-inductive-bias" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p><strong>Inductive bias</strong> refers to the set of assumptions that a learning algorithm uses to make predictions on unseen data. Since the training data is always finite, a model must make assumptions to generalize beyond the exact examples it has seen. Inductive bias is the “prior knowledge” or “built-in beliefs” of a model. Every machine learning model has an inductive bias; without one, a model could only memorize the training data and would be unable to make any predictions on new inputs. It is the component that makes machine <em>learning</em> possible.</p>
+<p><strong>The Problem: Mismatched Bias</strong></p>
+<p>The central “gotcha” is a mismatch between the model’s inductive bias and the true underlying structure of the data.</p>
+<ul class="simple">
+<li><p><strong>Bias is too strong or wrong:</strong> If the model’s assumptions are too rigid and do not reflect the data’s patterns (e.g., using a linear model for a highly non-linear problem), the model will underfit and have high bias error.</p></li>
+<li><p><strong>Bias is too weak:</strong> If the model’s assumptions are too flexible (e.g., a very deep decision tree), it has the freedom to fit the noise in the training data, leading to overfitting and high variance error.</p></li>
+</ul>
+<p>The success of a model is therefore critically dependent on choosing an architecture whose inductive bias aligns with the problem domain. This is the practical application of the “No Free Lunch” theorem.</p>
+<p><strong>Solutions &amp; Mitigation Strategies: Aligning Bias to the Problem</strong></p>
+<p>The strategy is not to eliminate inductive bias (which is impossible) but to consciously choose a model with the right bias. This involves understanding the biases of common algorithms:</p>
+<ul class="simple">
+<li><p><strong>Linear Models:</strong> Assume a linear relationship between features and the target.</p></li>
+<li><p><strong>Decision Trees / GBTs:</strong> Assume the data can be separated by a series of axis-aligned, hierarchical splits.</p></li>
+<li><p><strong>Convolutional Neural Networks (CNNs):</strong> Embody a strong bias for spatial data, specifically <strong>locality</strong> and <strong>translation equivariance</strong>.</p></li>
+<li><p><strong>Recurrent Neural Networks (RNNs):</strong> Assume sequential dependence and time invariance.</p></li>
+<li><p><strong>Transformers:</strong> Assume that any element in a sequence can be related to any other, making them ideal for capturing long-range, contextual dependencies.</p></li>
+</ul>
+</section>
+<section id="regularization-as-an-inductive-bias">
+<h3>Regularization as an Inductive Bias<a class="headerlink" href="#regularization-as-an-inductive-bias" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>Regularization techniques are explicit methods for injecting an inductive bias into a model. While a model’s architecture provides a structural bias, regularization provides a mathematical bias on the parameters themselves. It guides the learning algorithm towards a “simpler” solution from the set of all possible solutions that fit the data.</p>
+<ul class="simple">
+<li><p><strong>L2 Regularization (Ridge):</strong> Imposes a bias for solutions with <strong>small, distributed weights</strong>. Its “belief” is that no single feature should have an overwhelmingly large effect.</p></li>
+<li><p><strong>L1 Regularization (Lasso):</strong> Imposes a bias for <strong>sparse solutions</strong>. Its “belief” is that most features are irrelevant, and the solution should depend on only a small subset of them.</p></li>
+<li><p><strong>Dropout:</strong> Imposes a bias for <strong>robust, redundant representations</strong>. It believes that the network should not rely on any single neuron, forcing it to learn more distributed features.</p></li>
+</ul>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<p>The bias imposed by regularization is only beneficial if it aligns with the true nature of the problem.</p>
+<ul class="simple">
+<li><p><strong>Inappropriate Sparsity (L1):</strong> If you apply L1 regularization to a problem where many features are genuinely (though perhaps weakly) predictive, it will erroneously zero out useful features, harming model performance. This is common with correlated features, where Lasso will arbitrarily pick one and discard the others.</p></li>
+<li><p><strong>Inappropriate Simplicity (L2):</strong> In a problem that genuinely requires a few features to have very large weights to model sharp non-linearities, L2 regularization might over-penalize this solution, leading to underfitting.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<p>The solution is to treat the choice and strength of regularization as a key hyperparameter that reflects your prior belief about the problem.</p>
+<ul class="simple">
+<li><p><strong>Elastic Net:</strong> This combines L1 and L2 penalties, allowing for a balance between the sparsity bias of L1 and the grouping effect of L2. It’s often more robust than using L1 alone, especially in the presence of correlated features.</p></li>
+<li><p><strong>Cross-Validation:</strong> The regularization strength (e.g., the lambda parameter) must be tuned via cross-validation to find the optimal point in the bias-variance tradeoff for the specific dataset.</p></li>
+</ul>
+</section>
+</section>
+<section id="model-specific-biases">
+<h2>Model-Specific Biases<a class="headerlink" href="#model-specific-biases" title="Link to this heading">#</a></h2>
+<section id="linear-models-the-bias-of-linearity">
+<h3>Linear Models: The Bias of Linearity<a class="headerlink" href="#linear-models-the-bias-of-linearity" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>The primary inductive bias of all linear models (e.g., Linear and Logistic Regression) is that the relationship between the features and the target (or the log-odds of the target, for logistic regression) is <strong>linear</strong>. The model assumes that a change in the target variable for a unit change in a feature is constant, regardless of the feature’s value. This is a very strong assumption that imposes a simple, additive structure on the problem.</p>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<p>This bias is a significant weakness when the true relationship is non-linear.</p>
+<ul class="simple">
+<li><p><strong>Non-Linear Relationships:</strong> If the true relationship is, for example, quadratic, the linear model will systematically fail to capture it, leading to high bias and poor predictive performance.</p></li>
+<li><p><strong>Feature Interactions:</strong> The additive assumption means the model cannot automatically learn interactions between features (e.g., the effect of advertising spend on sales might depend on the time of year). The effect of one feature is assumed to be independent of the values of other features.</p></li>
+</ul>
+<p>Applying a linear model to a problem with strong non-linearities or interactions without accounting for them will result in an underfit model.</p>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<p>The key is to manually engineer features that re-introduce the non-linearity into the model.</p>
+<ul class="simple">
+<li><p><strong>Polynomial Features:</strong> Explicitly create new features that are polynomial transformations of the original features (e.g., create <span class="math notranslate nohighlight">\(x^2\)</span>, <span class="math notranslate nohighlight">\(x^3\)</span>) to allow the model to fit a curve.</p></li>
+<li><p><strong>Interaction Terms:</strong> Manually create features that are products of two or more original features (e.g., <code class="docutils literal notranslate"><span class="pre">feature_C</span> <span class="pre">=</span> <span class="pre">feature_A</span> <span class="pre">*</span> <span class="pre">feature_B</span></code>) to allow the model to capture interaction effects.</p></li>
+<li><p><strong>Basis Functions:</strong> Use more complex transformations like splines or radial basis functions to model more flexible curves.</p></li>
+</ul>
+<p>Essentially, you are weakening the strict linearity bias by pushing the complexity into the feature engineering stage.</p>
+<p>—</p>
+</section>
+<section id="tree-based-models-the-bias-of-hierarchical-axis-aligned-splits">
+<h3>Tree-Based Models: The Bias of Hierarchical, Axis-Aligned Splits<a class="headerlink" href="#tree-based-models-the-bias-of-hierarchical-axis-aligned-splits" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>The inductive bias of tree-based models (Decision Trees, Random Forests, GBTs) is that the feature space is separable by a series of <strong>hierarchical, axis-aligned splits</strong>. The model believes that the best way to partition the data is by asking a sequence of simple questions about individual features (e.g., is <cite>age</cite> &gt; 30?), creating a tree structure. This is a non-parametric approach that does not assume a specific functional form for the decision boundary.</p>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<p>This bias is highly effective for many tabular data problems but has key weaknesses.</p>
+<ul class="simple">
+<li><p><strong>Rotational Variance:</strong> The axis-aligned bias makes trees very sensitive to the orientation of the data. If the true decision boundary is a diagonal line, a tree must approximate it with a jagged “staircase” of many splits. A simple rotation of the feature space can turn an easy problem for a tree into a very difficult one.</p></li>
+<li><p><strong>Difficulty with Additive Structures:</strong> While trees are excellent at learning complex interactions, they are surprisingly inefficient at learning simple additive relationships. For a truly linear relationship like <span class="math notranslate nohighlight">\(Y = X_1 + X_2\)</span>, a tree model will also have to approximate the smooth plane with a step function.</p></li>
+</ul>
+<p>This makes trees very different from linear models; they excel where linear models fail (interactions) and struggle where linear models excel (additive structures).</p>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Feature Engineering:</strong> If you suspect a diagonal or other non-axis-aligned relationship exists, you can create new features that capture it (e.g., <code class="docutils literal notranslate"><span class="pre">feature_C</span> <span class="pre">=</span> <span class="pre">feature_A</span> <span class="pre">+</span> <span class="pre">feature_B</span></code>). This allows the tree to find the correct boundary with a single, simple split on the new feature.</p></li>
+<li><p><strong>Ensemble Methods:</strong> While ensembling doesn’t change the fundamental axis-aligned bias, it smooths out the jagged decision boundaries. By averaging many different “staircase” approximations (as in a Random Forest), the final decision boundary becomes smoother and generalizes better.</p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="ensemble-biases-bagging-vs-boosting">
+<h3>Ensemble Biases: Bagging vs. Boosting<a class="headerlink" href="#ensemble-biases-bagging-vs-boosting" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>Ensembling methods combine multiple base models to produce a stronger final model. Bagging and Boosting are the two dominant strategies, and they have fundamentally different inductive biases.</p>
+<ul class="simple">
+<li><p><strong>Bagging (e.g., Random Forest):</strong> Its inductive bias is that <strong>averaging the predictions of diverse, low-bias, high-variance models will reduce overall variance</strong>. It works by building many independent, complex models (e.g., deep decision trees) and averaging their outputs.</p></li>
+<li><p><strong>Boosting (e.g., Gradient Boosting):</strong> Its inductive bias is that a strong model can be built by <strong>iteratively correcting the errors of a sequence of weak learners</strong>. It works by building a series of simple models (e.g., shallow trees), where each new model is trained to fix the mistakes of the previous ones.</p></li>
+</ul>
+<p><strong>The Problem: Mismatched Strategy</strong></p>
+<p>The “gotcha” is applying the wrong strategy to the wrong kind of base learner. Bagging a set of high-bias models (like linear regression) will not be very effective, as averaging a group of models that are all wrong in the same way will still result in a wrong model. Boosting a set of high-variance, unconstrained models can lead to extremely rapid overfitting, as the model will start fitting the noise in the residuals.</p>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<p>The solution is to match the ensemble strategy to the appropriate base learner.</p>
+<ul class="simple">
+<li><p><strong>For Bagging:</strong> Use complex, low-bias, high-variance base learners. This is why Random Forests use fully grown decision trees. The diversity is introduced via bootstrapping the data and random feature selection (<code class="docutils literal notranslate"><span class="pre">max_features</span></code>).</p></li>
+<li><p><strong>For Boosting:</strong> Use simple, high-bias, low-variance base learners. This is why Gradient Boosting Machines typically use shallow decision trees (e.g., depth 3 to 8). The bias is reduced sequentially by the boosting process itself. Overfitting is controlled by the learning rate and early stopping.</p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="instance-based-models-knn-the-bias-of-locality">
+<h3>Instance-Based Models (KNN): The Bias of Locality<a class="headerlink" href="#instance-based-models-knn-the-bias-of-locality" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>The inductive bias of K-Nearest Neighbors (KNN) is one of <strong>locality</strong> or <strong>smoothness</strong>. It assumes that data points that are close to each other in the feature space (i.e., are “neighbors”) are likely to share the same label. This is a very intuitive bias. Unlike other models, it doesn’t try to learn a global function; instead, it makes a local decision for each new point based on its immediate surroundings. The strength and nature of this bias are directly controlled by the choice of <cite>k</cite> (the number of neighbors) and the distance metric.</p>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<p>This simple bias fails when the notion of “distance” in the feature space is not meaningful.</p>
+<ul class="simple">
+<li><p><strong>The Curse of Dimensionality:</strong> This is the primary weakness. In high-dimensional space, the concept of a “neighborhood” breaks down. All points tend to be sparse and approximately equidistant from each other, making the nearest neighbors not very near at all.</p></li>
+<li><p><strong>Irrelevant Features:</strong> If the data contains many features that are irrelevant to the prediction, they can add noise to the distance calculation, corrupting the neighborhood structure. Two points might be close only because they are similar on many irrelevant features.</p></li>
+<li><p><strong>Unscaled Features:</strong> The bias is entirely dependent on the distance metric. If features are not scaled, the feature with the largest range will dominate the distance calculation, rendering the other features useless.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Feature Scaling:</strong> This is mandatory. All features must be scaled to a common range (e.g., using StandardScaler or MinMaxScaler) before applying KNN.</p></li>
+<li><p><strong>Dimensionality Reduction:</strong> Using techniques like PCA or feature selection is crucial for high-dimensional data to ensure the distance metric is calculated in a meaningful space.</p></li>
+<li><p><strong>Choice of `k`:</strong> The value of <cite>k</cite> controls the strength of the smoothness bias. A small <cite>k</cite> leads to a very flexible (high variance) decision boundary, while a large <cite>k</cite> leads to a very smooth (high bias) boundary. <cite>k</cite> should be tuned via cross-validation.</p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="cnns-the-bias-of-spatial-structure">
+<h3>CNNs: The Bias of Spatial Structure<a class="headerlink" href="#cnns-the-bias-of-spatial-structure" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>Convolutional Neural Networks (CNNs) are a specialized type of neural network whose inductive biases are perfectly matched to grid-like data, such as images. Their architecture is built on two powerful “beliefs” about the data:</p>
+<ul class="simple">
+<li><p><strong>Locality:</strong> The assumption that features are local. In an image, a pixel is most strongly related to its immediate neighbors. This is why CNNs use small kernels (e.g., 3x3) that operate on local patches of the input, rather than connecting every input pixel to every neuron.</p></li>
+<li><p><strong>Translation Equivariance:</strong> The assumption that the identity of a feature does not change when its location does. A CNN achieves this through <strong>parameter sharing</strong>: the same filter (weight matrix) is slid across the entire image to detect the same feature (e.g., a vertical edge) everywhere. This makes the feature detection process equivariant to translation.</p></li>
+</ul>
+<p>These two biases together create a hierarchical bias, where simple local patterns are combined into more complex patterns in deeper layers.</p>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<p>CNNs are incredibly effective when these assumptions hold, but can be a poor choice when they don’t.</p>
+<ul class="simple">
+<li><p><strong>Non-Grid Data:</strong> For data where the features have no grid-like spatial relationship, such as tabular data from a customer database, the locality assumption is meaningless, and a CNN is inappropriate.</p></li>
+<li><p><strong>Positional Importance:</strong> For problems where the absolute position of a feature is critical (e.g., certain facial recognition tasks where the exact location of the eyes matters), the translation equivariance can be a disadvantage, as pooling layers can obscure precise positional information.</p></li>
+<li><p><strong>Rotational/Scale Variance:</strong> Standard CNNs are not inherently equivariant or invariant to rotation or changes in scale. They must learn to recognize rotated or scaled versions of objects by seeing many examples in the training data.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Data Augmentation:</strong> To handle variations like rotation and scale, heavy data augmentation is used during training to expose the model to many different versions of the same object.</p></li>
+<li><p><strong>Specialized Architectures:</strong> For problems requiring equivariance to other transformations like rotation, specialized architectures like <strong>Group Equivariant CNNs (G-CNNs)</strong> or <strong>Capsule Networks</strong> can be used.</p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="rnns-the-bias-of-sequentiality">
+<h3>RNNs: The Bias of Sequentiality<a class="headerlink" href="#rnns-the-bias-of-sequentiality" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>Recurrent Neural Networks (RNNs) are designed for sequential data. Their core inductive biases are <strong>sequential dependence</strong> and <strong>time invariance</strong>.</p>
+<ul class="simple">
+<li><p><strong>Sequential Dependence:</strong> The model assumes that the output at a given time step <span class="math notranslate nohighlight">\(t\)</span> is a function of the current input and the model’s hidden state from the previous time step, <span class="math notranslate nohighlight">\(h_t = f(x_t, h_{t-1})\)</span>. This creates a chain of dependence, allowing information to persist through the sequence. This is a Markovian assumption.</p></li>
+<li><p><strong>Time Invariance:</strong> Similar to parameter sharing in CNNs, an RNN applies the same transition function (the same set of weights) at every time step. It assumes that the rules for processing the sequence are fixed, regardless of the position in the sequence.</p></li>
+</ul>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<ul class="simple">
+<li><p><strong>Long-Range Dependencies:</strong> The basic RNN architecture struggles to maintain information over long sequences due to the <strong>vanishing and exploding gradient problem</strong>. The influence of an early input decays exponentially as it passes through the recurrent connections, making it difficult for the model to connect information across long distances.</p></li>
+<li><p><strong>Non-Sequential Data:</strong> Applying an RNN to data where the order is arbitrary (like a bag-of-words representation of a document) is inappropriate and will likely perform poorly as the sequential bias does not match the data structure.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Gated Architectures:</strong> The vanishing gradient problem is primarily solved by using more sophisticated gated architectures like the <strong>Long Short-Term Memory (LSTM)</strong> and <strong>Gated Recurrent Unit (GRU)</strong>. These models have explicit “gates” that control the flow of information, allowing them to selectively remember or forget information and maintain dependencies over much longer sequences.</p></li>
+<li><p><strong>Attention Mechanisms &amp; Transformers:</strong> For very long-range dependencies, the sequential bias of RNNs can itself become a bottleneck. Attention mechanisms, and the Transformer architecture which is based entirely on them, relax the strict sequential assumption and allow the model to directly attend to any part of the sequence when making a prediction.</p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="transformers-the-bias-of-all-pairs-interaction">
+<h3>Transformers: The Bias of All-Pairs Interaction<a class="headerlink" href="#transformers-the-bias-of-all-pairs-interaction" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>The core inductive bias of the Transformer architecture, via its <strong>self-attention mechanism</strong>, is that the data has the structure of a <strong>fully-connected graph</strong>. It assumes that any element in a sequence can be directly related to any other element, regardless of their distance. This is a very weak bias compared to an RNN’s strict sequentiality or a CNN’s locality. The model “believes” that long-range, contextual dependencies are paramount, and it learns the structure of these dependencies from the data itself rather than having it hard-coded in the architecture.</p>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<ul class="simple">
+<li><p><strong>Lack of Sequential Bias:</strong> Because the self-attention mechanism is permutation-invariant (shuffling the input sequence just shuffles the output), a pure Transformer has no inherent sense of sequence order. This is a major problem for tasks like language modeling where order is critical. This bias must be manually re-introduced via <strong>positional encodings</strong>.</p></li>
+<li><p><strong>Quadratic Complexity:</strong> The all-pairs interaction bias comes at a steep computational cost. The memory and compute required for self-attention scale quadratically with the sequence length (<span class="math notranslate nohighlight">\(O(n^2)\)</span>), making it very expensive for extremely long sequences.</p></li>
+<li><p><strong>Data Inefficiency:</strong> Having a weak inductive bias means the model has more freedom, but it also means it requires more data to learn the underlying patterns. Transformers are notoriously data-hungry compared to LSTMs or CNNs.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Positional Encodings:</strong> To give the model a sense of order, positional information is added to the input embeddings. This can be done using fixed sinusoidal functions or learned positional embeddings.</p></li>
+<li><p><strong>Efficient Attention:</strong> To combat the quadratic complexity, numerous “Efficient Transformer” variants have been proposed that approximate the full self-attention matrix using methods like sparsity or low-rank approximations (e.g., Linformer, Reformer).</p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="graph-neural-networks-the-bias-of-relational-structure">
+<h3>Graph Neural Networks: The Bias of Relational Structure<a class="headerlink" href="#graph-neural-networks-the-bias-of-relational-structure" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>The inductive bias of a Graph Neural Network (GNN) is that the data is structured as a <strong>graph</strong>, and the relationships (edges) between entities (nodes) are fundamental. Its core biases are:</p>
+<ul class="simple">
+<li><p><strong>Relational Bias:</strong> It assumes a node’s representation should be determined by its own features and the features of its neighbors. This is achieved through a message-passing or neighborhood aggregation scheme.</p></li>
+<li><p><strong>Permutation Equivariance/Invariance:</strong> A GNN’s operations are typically designed to be equivariant to the ordering of nodes. If you relabel the nodes in the graph, the output representation for each node will be the same (just relabeled). A final graph-level prediction is often permutation <em>invariant</em>. This is a critical bias for data like molecules, where there is no natural ordering of atoms.</p></li>
+</ul>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<ul class="simple">
+<li><p><strong>Over-smoothing:</strong> A common failure mode. As a GNN gets deeper (i.e., more rounds of message passing), the representations of all nodes in a connected component of the graph can converge to the same value. The model loses the ability to distinguish between individual nodes as information becomes globally mixed.</p></li>
+<li><p><strong>Handling Long-Range Dependencies:</strong> The basic message-passing framework is inherently local (1-hop neighbors). Capturing the influence of nodes that are many hops away requires a deep GNN, which leads to the over-smoothing problem.</p></li>
+<li><p><strong>Heterophily:</strong> The model’s bias assumes homophily (connected nodes are similar). It can struggle on graphs with heterophily, where connected nodes are expected to be different (e.g., in a fraud network, fraudsters are connected to legitimate users).</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Shallow Architectures:</strong> Most successful GNNs are very shallow (2-4 layers) to avoid over-smoothing.</p></li>
+<li><p><strong>Residual Connections &amp; Gating:</strong> Similar to ResNets and LSTMs, adding skip connections or gating mechanisms can help GNNs go deeper by improving information flow.</p></li>
+<li><p><strong>Architectural Variants:</strong> More advanced GNNs that can better handle long-range dependencies or heterophily have been developed (e.g., GCNII, Graph Transformers).</p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="bayesian-models-the-bias-of-the-prior">
+<h3>Bayesian Models: The Bias of the Prior<a class="headerlink" href="#bayesian-models-the-bias-of-the-prior" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>The inductive bias in Bayesian modeling is made explicit through the choice of the <strong>prior distribution</strong>, <span class="math notranslate nohighlight">\(P(\theta)\)</span>. The prior represents our belief about the model parameters <span class="math notranslate nohighlight">\(\theta\)</span> <em>before</em> we have seen any data. By applying Bayes’ theorem, we update this prior belief with the evidence from the data (the likelihood) to arrive at a posterior distribution, <span class="math notranslate nohighlight">\(P(\theta|X) \propto P(X|\theta)P(\theta)\)</span>. The prior is a powerful mechanism for injecting domain knowledge and regularizing the model.</p>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<ul class="simple">
+<li><p><strong>Misspecified Prior:</strong> If the prior is too strong and incorrect, it can overwhelm the evidence from the data, leading to a posterior that is biased towards the wrong solution. This is particularly dangerous with small datasets.</p></li>
+<li><p><strong>Improper or Vague Priors:</strong> Using a “non-informative” or flat prior might seem objective, but it can lead to poorly behaved posterior distributions. Furthermore, no prior is truly uninformative; a flat prior on one parameter can imply a highly informative prior on a transformation of that parameter.</p></li>
+</ul>
+<p>The “gotcha” is that the choice of prior is subjective and can have a significant impact on the final model, especially when data is scarce.</p>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Prior Predictive Checks:</strong> Before fitting the model, draw samples from the prior distribution to see if they generate plausible data. This helps validate that your prior beliefs are reasonable.</p></li>
+<li><p><strong>Sensitivity Analysis:</strong> Fit the model with several different plausible priors (e.g., one optimistic, one pessimistic, one neutral) to see how much the posterior changes. If the conclusions are robust across different priors, you can be more confident in the result.</p></li>
+<li><p><strong>Empirical Bayes:</strong> Use the data itself to help inform the parameters of the prior distribution. This is a middle ground between a fully Bayesian and a frequentist approach.</p></li>
+</ul>
+<p>—</p>
+</section>
+<section id="optimizer-bias-the-bias-of-the-algorithm-itself">
+<h3>Optimizer Bias: The Bias of the Algorithm Itself<a class="headerlink" href="#optimizer-bias-the-bias-of-the-algorithm-itself" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>Beyond the explicit bias of the model architecture and the mathematical bias of regularization, there is a third, more subtle form: the <strong>implicit inductive bias of the optimization algorithm</strong>. When multiple solutions exist that can perfectly fit the training data (the underdetermined case, common in deep learning), the choice of optimizer (e.g., SGD) and its hyperparameters (e.g., learning rate, batch size) will systematically lead it to converge to one specific type of solution over others.</p>
+<p><strong>The Problem: Understanding Generalization in Overparameterized Models</strong></p>
+<p>The biggest mystery this helps explain is why massively overparameterized deep learning models generalize so well. Classical theory would suggest they should overfit badly. The concept of optimizer bias suggests that even though these models <em>could</em> learn a complex, jagged function that memorizes the data, the optimization process itself has a built-in preference for “simpler” functions that happen to generalize well.</p>
+<p><strong>Key Optimizer Biases</strong></p>
+<ul class="simple">
+<li><p><strong>Stochastic Gradient Descent (SGD):</strong> It is widely believed that SGD has an implicit bias towards finding <strong>flat minima</strong> in the loss landscape. Flat minima are regions where the loss changes very little in the neighborhood of the solution. These solutions are more robust to small shifts between the train and test distributions and thus generalize better than “sharp” minima.</p></li>
+<li><p><strong>Adam:</strong> While Adam often converges faster than SGD, some research suggests its adaptive nature might lead it to converge to sharper minima, which can sometimes lead to poorer generalization compared to a well-tuned SGD with momentum.</p></li>
+<li><p><strong>Large Learning Rates / Batch Sizes:</strong> These choices also influence the final solution. For example, using a large batch size can lead to convergence in sharper minima compared to a smaller batch size, whose inherent noise can help the optimizer find flatter, more generalizable regions.</p></li>
+</ul>
+</section>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preface-assumptions-vs-inductive-bias">Preface: Assumptions vs. Inductive Bias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-concepts">General Concepts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-inductive-bias">What is Inductive Bias?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regularization-as-an-inductive-bias">Regularization as an Inductive Bias</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specific-biases">Model-Specific Biases</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-models-the-bias-of-linearity">Linear Models: The Bias of Linearity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tree-based-models-the-bias-of-hierarchical-axis-aligned-splits">Tree-Based Models: The Bias of Hierarchical, Axis-Aligned Splits</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-biases-bagging-vs-boosting">Ensemble Biases: Bagging vs. Boosting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-based-models-knn-the-bias-of-locality">Instance-Based Models (KNN): The Bias of Locality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cnns-the-bias-of-spatial-structure">CNNs: The Bias of Spatial Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rnns-the-bias-of-sequentiality">RNNs: The Bias of Sequentiality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers-the-bias-of-all-pairs-interaction">Transformers: The Bias of All-Pairs Interaction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-neural-networks-the-bias-of-relational-structure">Graph Neural Networks: The Bias of Relational Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-models-the-bias-of-the-prior">Bayesian Models: The Bias of the Prior</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizer-bias-the-bias-of-the-algorithm-itself">Optimizer Bias: The Bias of the Algorithm Itself</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/ml_blog/inductive_biases_in_machine_learing.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Abhijeet Pendyala.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
