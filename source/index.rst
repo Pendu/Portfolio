@@ -147,7 +147,7 @@ Contact
    :maxdepth: 2
    :caption: Table of Contents
 
-   research
+   research/research
    ml_software
    misc
    ml_blog/ml_blog
