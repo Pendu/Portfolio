@@ -22,9 +22,9 @@ This website serves multiple purposes:
 CV and Resume
 *************
 
-* Download my CV in PDF format: `Abhijeet Pendyala - CV.pdf <https://abhijeet-pendyala.github.io/cv/Abhijeet_Pendyala_CV.pdf>`_
+* Download my CV in PDF format: `Abhijeet Pendyala - CV.pdf <https://github.com/Pendu/Portfolio/blob/06d606a7d9821bce407e546517501a92042c7e3a/source/CV_aug_2025.pdf>`_
 
-* Download my Resume in PDF format: `Abhijeet Pendyala - Resume.pdf <https://abhijeet-pendyala.github.io/cv/Abhijeet_Pendyala_Resume.pdf>`_ 
+.. * Download my Resume in PDF format: `Abhijeet Pendyala - Resume.pdf <https://abhijeet-pendyala.github.io/cv/Abhijeet_Pendyala_Resume.pdf>`_ 
 
 Interests
 ******************
