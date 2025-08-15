@@ -1,0 +1,721 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. A Deep Dive into ML Model Assumptions &#8212; Personal Website</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/_static/custom.css" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'ml_blog/assumptions_in_machine_learning';</script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="2. Inductive Biases of ML Models" href="inductive_biases_in_machine_learning.html" />
+    <link rel="prev" title="ML Blog" href="ml_blog.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../_static/home_icon.svg" class="logo__image only-light" alt=""/>
+    <img src="../_static/home_icon.svg" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">Home</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../research.html">
+    Research Work
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../ml_software.html">
+    ML Software Development
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../misc.html">
+    Misc
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="ml_blog.html">
+    ML Blog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../book_reviews/book_reviews.html">
+    Book Reviews
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../research.html">
+    Research Work
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../ml_software.html">
+    ML Software Development
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../misc.html">
+    Misc
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="ml_blog.html">
+    ML Blog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../book_reviews/book_reviews.html">
+    Book Reviews
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="ml_blog.html" class="nav-link">ML Blog</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><span class="section-number">1. </span>A Deep Dive into ML Model Assumptions</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="a-deep-dive-into-ml-model-assumptions">
+<span id="assumptions-in-machine-learning"></span><h1><span class="section-number">1. </span>A Deep Dive into ML Model Assumptions<a class="headerlink" href="#a-deep-dive-into-ml-model-assumptions" title="Link to this heading">#</a></h1>
+<p>Understanding the assumptions behind machine learning models is a critical skill for any data scientist. These assumptions, are the underlying principles that guide how a model learns from data. When these assumptions align with the structure of your data, a model can perform brilliantly. When they are violated, the model’s results can be misleading or outright incorrect.</p>
+<p>This guide explores the core assumptions of several major classes of machine learning models, what happens when those assumptions break down, and how to address the issues.</p>
+<section id="assumptions-of-linear-models">
+<h2><span class="section-number">1.1. </span>Assumptions of Linear Models<a class="headerlink" href="#assumptions-of-linear-models" title="Link to this heading">#</a></h2>
+<section id="the-gauss-markov-assumptions-normality">
+<h3><span class="section-number">1.1.1. </span>The Gauss-Markov Assumptions &amp; Normality<a class="headerlink" href="#the-gauss-markov-assumptions-normality" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>For an Ordinary Least Squares (OLS) regression model to be the Best Linear Unbiased Estimator (BLUE), it must meet a set of conditions known as the Gauss-Markov assumptions. A further assumption, normality of errors, is needed for valid statistical inference.</p>
+<ul class="simple">
+<li><p><strong>Linearity:</strong> The relationship between the features and the target variable is linear.</p></li>
+<li><p><strong>No Perfect Multicollinearity:</strong> No feature is a perfect linear combination of other features.</p></li>
+<li><p><strong>Exogeneity of Features (:math:`E[epsilon|X] = 0`):</strong> The error term has a conditional mean of zero. This implies that the features are not correlated with the error term.</p></li>
+<li><p><strong>Homoscedasticity:</strong> The error term has a constant variance for all levels of the features (<span class="math notranslate nohighlight">\(\text{Var}(\epsilon_i) = \sigma^2\)</span>).</p></li>
+<li><p><strong>No Autocorrelation:</strong> The error terms are uncorrelated with each other (<span class="math notranslate nohighlight">\(\text{Cov}(\epsilon_i, \epsilon_j) = 0\)</span> for <span class="math notranslate nohighlight">\(i \neq j\)</span>).</p></li>
+<li><p><strong>Normality of Errors (Optional, for inference):</strong> The error terms are normally distributed. This is not required for OLS to be BLUE, but it is required for hypothesis tests (t-tests, F-tests) and confidence intervals to be valid.</p></li>
+</ul>
+<p><strong>The Problem: When They Break Down</strong></p>
+<p>Violating these assumptions can invalidate the results of a linear model.</p>
+<ul class="simple">
+<li><p><strong>Non-linearity:</strong> The model will be biased and systematically underfit the data.</p></li>
+<li><p><strong>Heteroscedasticity:</strong> OLS estimates are still unbiased, but the standard errors will be incorrect. This makes all hypothesis tests and confidence intervals unreliable. You might think a feature is significant when it’s not, or vice-versa.</p></li>
+<li><p><strong>Autocorrelation:</strong> Common in time-series data. Similar to heteroscedasticity, it leads to incorrect standard errors and invalid inference.</p></li>
+<li><p><strong>Non-normality of Errors:</strong> For small sample sizes, this invalidates p-values and confidence intervals.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<p>Detecting and correcting violations is a standard part of the regression workflow.</p>
+<ul class="simple">
+<li><p><strong>Detection:</strong> Use diagnostic plots. A plot of residuals vs. fitted values is excellent for spotting non-linearity (patterns) and heteroscedasticity (funnel shapes). A Q-Q plot of residuals can check for normality. Formal tests like the Breusch-Pagan test (for heteroscedasticity) and the Durbin-Watson test (for autocorrelation) can also be used.</p></li>
+<li><p><strong>Correction:</strong> For non-linearity, one can apply transformations to the features or target (e.g., log, polynomial) or use a more complex model. For heteroscedasticity and autocorrelation, the best practice is often to use <strong>Robust Standard Errors</strong> (e.g., Huber-White standard errors), which provide a corrected estimate. Alternatively, one could use Weighted Least Squares (WLS) or Generalized Least Squares (GLS).</p></li>
+</ul>
+</section>
+</section>
+<section id="assumptions-of-tree-based-models">
+<h2><span class="section-number">1.2. </span>Assumptions of Tree-Based Models<a class="headerlink" href="#assumptions-of-tree-based-models" title="Link to this heading">#</a></h2>
+<section id="implicit-assumptions-of-trees-non-parametric-models">
+<h3><span class="section-number">1.2.1. </span>Implicit Assumptions of Trees (Non-Parametric Models)<a class="headerlink" href="#implicit-assumptions-of-trees-non-parametric-models" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>Tree-based models like Decision Trees, Random Forests, and Gradient Boosted Trees are non-parametric. This means they do not make strong assumptions about the functional form of the relationship between features and the target (e.g., they don’t assume linearity). This flexibility is a major advantage. However, they are not assumption-free; their assumptions are implicit in their structure and are better described as <strong>inductive biases</strong>.</p>
+<ul class="simple">
+<li><p><strong>Axis-Aligned Splits:</strong> The core assumption is that the feature space can be effectively partitioned using a series of axis-aligned splits (e.g., <code class="docutils literal notranslate"><span class="pre">feature_A</span> <span class="pre">&gt;</span> <span class="pre">5</span></code>).</p></li>
+<li><p><strong>Hierarchical Structure:</strong> They assume the data has a hierarchical structure that can be captured by a tree.</p></li>
+<li><p><strong>Data Independence:</strong> Like most models, they still assume the training samples are independent (IID). A violation (e.g., time-series data) requires special handling.</p></li>
+</ul>
+<p><strong>The Problem: When They Break Down</strong></p>
+<p>The implicit assumptions of trees can be “gotchas” in certain scenarios.</p>
+<ul class="simple">
+<li><p><strong>Diagonal Decision Boundaries:</strong> If the true decision boundary in the data is diagonal (e.g., <code class="docutils literal notranslate"><span class="pre">feature_A</span> <span class="pre">+</span> <span class="pre">feature_B</span> <span class="pre">&gt;</span> <span class="pre">10</span></code>), a tree model will struggle. It will be forced to approximate the diagonal line with a jagged, inefficient “staircase” of many axis-aligned splits, which can lead to overfitting and a loss of predictive power.</p></li>
+<li><p><strong>High-Cardinality Categorical Features:</strong> Trees can be biased towards selecting high-cardinality features during splitting, as these features offer more potential split points, increasing the chance of a “good” split purely by chance.</p></li>
+<li><p><strong>Instability:</strong> Small changes in the training data can lead to a completely different tree structure being learned. This is a sign of high variance, which is what ensemble methods like Random Forest are designed to mitigate.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Feature Engineering:</strong> For diagonal boundaries, creating new features that are combinations of existing ones (e.g., <code class="docutils literal notranslate"><span class="pre">feature_C</span> <span class="pre">=</span> <span class="pre">feature_A</span> <span class="pre">+</span> <span class="pre">feature_B</span></code>) can allow the tree to find the correct boundary with a single split.</p></li>
+<li><p><strong>Ensemble Methods:</strong> Use Random Forests or Gradient Boosting instead of a single decision tree. Bagging (in Random Forests) and boosting both dramatically reduce the instability of individual trees and improve generalization.</p></li>
+<li><p><strong>Categorical Feature Handling:</strong> For high-cardinality features, consider using target encoding or other more sophisticated methods instead of one-hot encoding, which can make the feature space unwieldy for trees.</p></li>
+</ul>
+</section>
+</section>
+<section id="assumptions-of-time-series-models">
+<h2><span class="section-number">1.3. </span>Assumptions of Time Series Models<a class="headerlink" href="#assumptions-of-time-series-models" title="Link to this heading">#</a></h2>
+<section id="the-assumption-of-stationarity">
+<h3><span class="section-number">1.3.1. </span>The Assumption of Stationarity<a class="headerlink" href="#the-assumption-of-stationarity" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>Many classical time series models, like ARIMA, operate under the assumption that the underlying time series is <strong>stationary</strong>. A stationary series is one whose statistical properties do not change over time. More formally:</p>
+<ul class="simple">
+<li><p><strong>Constant Mean:</strong> The mean of the series is not a function of time.</p></li>
+<li><p><strong>Constant Variance:</strong> The variance of the series is not a function of time (this is a form of homoscedasticity).</p></li>
+<li><p><strong>Constant Autocovariance:</strong> The covariance between two observations depends only on the lag (the distance between them), not on time itself.</p></li>
+</ul>
+<p>This assumption is crucial because it implies that the patterns learned from the past are repeatable and will continue into the future, which is the entire basis for forecasting.</p>
+<p><strong>The Problem: When They Break Down</strong></p>
+<p>Most real-world time series are non-stationary.</p>
+<ul class="simple">
+<li><p><strong>Trends:</strong> The series has a long-term upward or downward movement (violates constant mean). A classic example is a company’s stock price over years.</p></li>
+<li><p><strong>Seasonality:</strong> The series exhibits predictable, repeating patterns over a fixed period (e.g., daily, weekly, yearly). This also violates the constant mean assumption.</p></li>
+<li><p><strong>Changing Variance:</strong> The volatility of the series changes over time. For example, a stock market might be much more volatile during a financial crisis.</p></li>
+</ul>
+<p>Applying a model like ARIMA to a non-stationary series will lead to a fundamentally flawed model that produces unreliable and nonsensical forecasts.</p>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<p>The goal is to transform the non-stationary series into a stationary one before modeling.</p>
+<ul class="simple">
+<li><p><strong>Detection:</strong> Visually inspect the time series plot for obvious trends or seasonality. Analyze the Autocorrelation Function (ACF) plot; for a non-stationary series, the ACF will decay very slowly. Use formal statistical tests like the <strong>Augmented Dickey-Fuller (ADF) test</strong>, where the null hypothesis is that the series is non-stationary.</p></li>
+<li><dl class="simple">
+<dt><strong>Correction:</strong></dt><dd><ul>
+<li><p><strong>For Trends:</strong> The most common method is <strong>differencing</strong>. That is, instead of modeling the value <span class="math notranslate nohighlight">\(Y_t\)</span>, you model the change from the previous period, <span class="math notranslate nohighlight">\(\Delta Y_t = Y_t - Y_{t-1}\)</span>. This is the ‘I’ (Integrated) part of an ARIMA model.</p></li>
+<li><p><strong>For Seasonality:</strong> You can use seasonal differencing, where you subtract the value from the previous season (e.g., <span class="math notranslate nohighlight">\(Y_t - Y_{t-12}\)</span> for monthly data).</p></li>
+<li><p><strong>For Changing Variance:</strong> Apply a transformation like taking the logarithm or using a Box-Cox transformation to stabilize the variance.</p></li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</section>
+</section>
+<section id="assumptions-of-instance-based-models">
+<h2><span class="section-number">1.4. </span>Assumptions of Instance-Based Models<a class="headerlink" href="#assumptions-of-instance-based-models" title="Link to this heading">#</a></h2>
+<section id="k-nearest-neighbors-knn">
+<h3><span class="section-number">1.4.1. </span>K-Nearest Neighbors (KNN)<a class="headerlink" href="#k-nearest-neighbors-knn" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>K-Nearest Neighbors (KNN) is a simple, non-parametric algorithm used for classification and regression. It makes predictions for a new data point based on the majority class (for classification) or average value (for regression) of its ‘k’ nearest neighbors in the feature space. Its core assumptions are implicit in the distance calculation.</p>
+<ul class="simple">
+<li><p><strong>The “Neighborhood” Assumption:</strong> The most critical implicit assumption is that data points close to each other in the feature space are likely to have the same target value.</p></li>
+<li><p><strong>Feature Relevance:</strong> The model assumes all features are equally important and relevant to the outcome, as they all contribute to the distance metric.</p></li>
+<li><p><strong>Scale Dependency:</strong> The distance metric (e.g., Euclidean distance) is highly sensitive to the scale of the features.</p></li>
+</ul>
+<p><strong>The Problem: When They Break Down</strong></p>
+<p>KNN’s simplicity is deceptive, and it fails spectacularly when its implicit assumptions are violated.</p>
+<ul class="simple">
+<li><p><strong>The Curse of Dimensionality:</strong> As the number of features (dimensions) increases, the concept of “distance” becomes less meaningful. In high-dimensional space, all points tend to be far away from each other, and the nearest neighbor might not be “near” at all.</p></li>
+<li><p><strong>Irrelevant Features:</strong> If the dataset contains many irrelevant features, they add noise to the distance calculation. Two points might be close in the irrelevant dimensions but far apart in the important ones, leading to incorrect predictions.</p></li>
+<li><p><strong>Unscaled Features:</strong> If features are on different scales (e.g., age in years and income in dollars), the feature with the largest scale will dominate the distance calculation, effectively ignoring the contribution of other features.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Feature Scaling:</strong> This is not optional for KNN; it is mandatory. Features must be scaled to a common range before applying KNN. Common methods include StandardScaler (to zero mean and unit variance) or MinMaxScaler (to a [0, 1] range).</p></li>
+<li><p><strong>Dimensionality Reduction:</strong> Before using KNN on a high-dimensional dataset, it’s crucial to perform dimensionality reduction using techniques like Principal Component Analysis (PCA) or feature selection.</p></li>
+<li><p><strong>Distance Metric Selection:</strong> While Euclidean distance is the default, other metrics like Manhattan distance or Cosine similarity might be more appropriate depending on the data’s structure.</p></li>
+</ul>
+</section>
+</section>
+<section id="assumptions-of-probabilistic-models">
+<h2><span class="section-number">1.5. </span>Assumptions of Probabilistic Models<a class="headerlink" href="#assumptions-of-probabilistic-models" title="Link to this heading">#</a></h2>
+<section id="the-naive-conditional-independence-assumption">
+<h3><span class="section-number">1.5.1. </span>The ‘Naive’ Conditional Independence Assumption<a class="headerlink" href="#the-naive-conditional-independence-assumption" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>This is the core assumption of the <strong>Naive Bayes</strong> family of classifiers. The model is ‘naive’ because it assumes that all features are <strong>conditionally independent</strong> of each other, given the class label. For example, in a spam classifier, it assumes that the presence of the word “viagra” is independent of the presence of the word “free”, given that the email is spam. Mathematically, for features <span class="math notranslate nohighlight">\(X_1, ..., X_n\)</span> and class <span class="math notranslate nohighlight">\(Y\)</span>, it assumes <span class="math notranslate nohighlight">\(P(X_i | Y, X_j) = P(X_i | Y)\)</span> for all <span class="math notranslate nohighlight">\(i \neq j\)</span>.</p>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<p>In nearly all real-world problems, this assumption is false. Words in a sentence are not independent; pixels in an image are not independent; a patient’s symptoms are not independent.</p>
+<p><strong>Why it Still Works (Often)</strong></p>
+<p>Naive Bayes often performs surprisingly well even when the independence assumption is clearly violated.</p>
+<ul class="simple">
+<li><p><strong>Classification vs. Probability Estimation:</strong> The goal of a classifier is only to get the correct class, not to produce accurate probability estimates. The independence assumption can lead to poorly calibrated probabilities, but as long as the correct class has the highest probability, the classification is correct.</p></li>
+<li><p><strong>Bias-Variance Tradeoff:</strong> The strong, incorrect assumption gives the model a high bias, but this comes with very low variance. In situations with limited data, this high bias can be a form of regularization that prevents overfitting.</p></li>
+</ul>
+</section>
+</section>
+<section id="assumptions-of-support-vector-machines">
+<h2><span class="section-number">1.6. </span>Assumptions of Support Vector Machines<a class="headerlink" href="#assumptions-of-support-vector-machines" title="Link to this heading">#</a></h2>
+<section id="data-separability-the-kernel-trick">
+<h3><span class="section-number">1.6.1. </span>Data Separability &amp; The Kernel Trick<a class="headerlink" href="#data-separability-the-kernel-trick" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>Support Vector Machines (SVMs) are a powerful class of supervised learning models. Their core assumption, or inductive bias, changes depending on the kernel used.</p>
+<ul class="simple">
+<li><p><strong>Linear SVM:</strong> The fundamental assumption is that the data is <strong>linearly separable</strong> (or nearly linearly separable, in the case of the soft-margin SVM). The model’s objective is to find the hyperplane that separates the classes with the maximum possible margin.</p></li>
+<li><p><strong>Kernel SVM:</strong> For data that is not linearly separable, SVMs use the <strong>kernel trick</strong>. The implicit assumption here is that the data <em>will become</em> linearly separable if it is mapped to a higher-dimensional feature space. The kernel function allows the SVM to operate in this high-dimensional space without ever having to explicitly compute the coordinates of the data in that space.</p></li>
+</ul>
+<p><strong>The Problem: When They Break Down</strong></p>
+<ul class="simple">
+<li><p><strong>Heavily Overlapping Data:</strong> If the classes are heavily mixed and not separable even in a high-dimensional space, SVMs can perform poorly.</p></li>
+<li><p><strong>Kernel and Parameter Choice:</strong> The performance of a kernel SVM is critically dependent on the choice of the kernel (e.g., Polynomial, Radial Basis Function - RBF) and its hyperparameters (like <code class="docutils literal notranslate"><span class="pre">C</span></code> for regularization and <code class="docutils literal notranslate"><span class="pre">gamma</span></code> for the RBF kernel).</p></li>
+<li><p><strong>Computational Complexity:</strong> Training a kernel SVM is typically between <span class="math notranslate nohighlight">\(O(n^2 d)\)</span> and <span class="math notranslate nohighlight">\(O(n^3 d)\)</span>. This makes them computationally intractable for very large datasets.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Hyperparameter Tuning:</strong> Rigorous cross-validation is essential to find the best combination of the kernel, the regularization parameter <code class="docutils literal notranslate"><span class="pre">C</span></code>, and kernel-specific parameters like <code class="docutils literal notranslate"><span class="pre">gamma</span></code>.</p></li>
+<li><p><strong>Scaling:</strong> Like KNN, SVMs are sensitive to the scale of the features, so proper feature scaling (e.g., with StandardScaler) is a mandatory preprocessing step.</p></li>
+<li><p><strong>For Large Datasets:</strong> For large datasets, one can use online or linear SVM implementations (like <code class="docutils literal notranslate"><span class="pre">SGDClassifier</span></code> in scikit-learn with a hinge loss) which scale much better.</p></li>
+</ul>
+</section>
+</section>
+<section id="assumptions-of-deep-learning-models">
+<h2><span class="section-number">1.7. </span>Assumptions of Deep Learning Models<a class="headerlink" href="#assumptions-of-deep-learning-models" title="Link to this heading">#</a></h2>
+<section id="general-neural-networks-compositionality">
+<h3><span class="section-number">1.7.1. </span>General Neural Networks (Compositionality)<a class="headerlink" href="#general-neural-networks-compositionality" title="Link to this heading">#</a></h3>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>The most fundamental inductive bias of a standard feed-forward neural network is the assumption of <strong>compositionality</strong> or <strong>hierarchical structure</strong> in the data. The layered architecture is designed to learn features in a hierarchical fashion: the first layer learns simple patterns, the second layer combines these to learn more complex patterns, and so on.</p>
+<p><strong>The Problem: When It Breaks Down</strong></p>
+<p>This assumption is very general, but it can break down for problems that lack a clear hierarchical structure. More importantly, without a more specific inductive bias tailored to the data modality (like for images or text), a standard Multi-Layer Perceptron (MLP) can be very inefficient.</p>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<p>The solution is to choose a network architecture whose inductive bias matches the data’s specific structure.</p>
+<ul class="simple">
+<li><p><strong>For Spatial Data (Images):</strong> Use a <strong>Convolutional Neural Network (CNN)</strong>.</p></li>
+<li><p><strong>For Sequential Data (Text, Time Series):</strong> Use a <strong>Recurrent Neural Network (RNN)</strong> or a <strong>Transformer</strong>.</p></li>
+<li><p><strong>For Graph/Network Data:</strong> Use a <strong>Graph Neural Network (GNN)</strong>.</p></li>
+</ul>
+</section>
+</section>
+<section id="convolutional-neural-networks-cnns">
+<h2><span class="section-number">1.8. </span>Convolutional Neural Networks (CNNs)<a class="headerlink" href="#convolutional-neural-networks-cnns" title="Link to this heading">#</a></h2>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>CNNs are built on two powerful inductive biases for grid-like data:</p>
+<ul class="simple">
+<li><p><strong>Locality:</strong> The assumption that features are local. In an image, a pixel is most strongly related to its immediate neighbors.</p></li>
+<li><p><strong>Translation Equivariance:</strong> The assumption that the identity of an object does not change when its location does. This is achieved through <strong>parameter sharing</strong>: the same filter is slid across the entire image to detect the same feature everywhere.</p></li>
+</ul>
+<p><strong>The Problem: When They Break Down</strong></p>
+<ul class="simple">
+<li><p><strong>Non-Grid Data:</strong> For data where features have no spatial relationship (e.g., tabular data), the locality assumption is meaningless.</p></li>
+<li><p><strong>Positional Importance:</strong> For problems where the absolute position of a feature is critical, the translation equivariance can be a disadvantage.</p></li>
+<li><p><strong>Rotational/Scale Variance:</strong> Standard CNNs are not inherently invariant to rotation or changes in scale.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Data Augmentation:</strong> To handle variations like rotation and scale, heavy data augmentation is used during training.</p></li>
+<li><p><strong>Specialized Architectures:</strong> For problems requiring equivariance to other transformations, specialized architectures like <strong>Group Equivariant CNNs (G-CNNs)</strong> can be used.</p></li>
+</ul>
+</section>
+<section id="recurrent-neural-networks-rnns">
+<h2><span class="section-number">1.9. </span>Recurrent Neural Networks (RNNs)<a class="headerlink" href="#recurrent-neural-networks-rnns" title="Link to this heading">#</a></h2>
+<p><strong>Concept Definition &amp; Importance</strong></p>
+<p>RNNs are designed for sequential data. Their core inductive bias is <strong>sequential dependence</strong> and <strong>time invariance</strong>.</p>
+<ul class="simple">
+<li><p><strong>Sequential Dependence:</strong> The model assumes that the output at a given time step <span class="math notranslate nohighlight">\(t\)</span> is a function of the current input and the model’s hidden state from the previous time step, <span class="math notranslate nohighlight">\(h_t = f(x_t, h_{t-1})\)</span>.</p></li>
+<li><p><strong>Time Invariance:</strong> An RNN applies the same transition function (the same set of weights) at every time step.</p></li>
+</ul>
+<p><strong>The Problem: When They Break Down</strong></p>
+<ul class="simple">
+<li><p><strong>Long-Range Dependencies:</strong> The basic RNN architecture struggles to maintain information over long sequences due to the <strong>vanishing and exploding gradient problem</strong>.</p></li>
+<li><p><strong>Non-Sequential Data:</strong> Applying an RNN to data where the order is arbitrary is inappropriate.</p></li>
+</ul>
+<p><strong>Solutions &amp; Mitigation Strategies</strong></p>
+<ul class="simple">
+<li><p><strong>Gated Architectures:</strong> The vanishing gradient problem is primarily solved by using more sophisticated gated architectures like the <strong>Long Short-Term Memory (LSTM)</strong> and <strong>Gated Recurrent Unit (GRU)</strong>.</p></li>
+<li><p><strong>Attention Mechanisms &amp; Transformers:</strong> For very long-range dependencies, attention mechanisms, and the Transformer architecture which is based entirely on them, relax the strict sequential assumption and allow the model to directly attend to any part of the sequence.</p></li>
+</ul>
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="ml_blog.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ML Blog</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="inductive_biases_in_machine_learning.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>Inductive Biases of ML Models</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-linear-models">1.1. Assumptions of Linear Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gauss-markov-assumptions-normality">1.1.1. The Gauss-Markov Assumptions &amp; Normality</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-tree-based-models">1.2. Assumptions of Tree-Based Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implicit-assumptions-of-trees-non-parametric-models">1.2.1. Implicit Assumptions of Trees (Non-Parametric Models)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-time-series-models">1.3. Assumptions of Time Series Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-assumption-of-stationarity">1.3.1. The Assumption of Stationarity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-instance-based-models">1.4. Assumptions of Instance-Based Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-knn">1.4.1. K-Nearest Neighbors (KNN)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-probabilistic-models">1.5. Assumptions of Probabilistic Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-conditional-independence-assumption">1.5.1. The ‘Naive’ Conditional Independence Assumption</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-support-vector-machines">1.6. Assumptions of Support Vector Machines</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-separability-the-kernel-trick">1.6.1. Data Separability &amp; The Kernel Trick</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-deep-learning-models">1.7. Assumptions of Deep Learning Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-neural-networks-compositionality">1.7.1. General Neural Networks (Compositionality)</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">1.8. Convolutional Neural Networks (CNNs)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-rnns">1.9. Recurrent Neural Networks (RNNs)</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/ml_blog/assumptions_in_machine_learning.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2025, Abhijeet Pendyala.
+      <br/>
+    
+  </p>
+</div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

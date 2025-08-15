@@ -2,11 +2,8 @@
     text-align: center;
 }
 
-.sidebar img {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 0px;
+.sidebar .image {
+    /* Remove all custom styling */
 }
 
 .fancy-download-button {
