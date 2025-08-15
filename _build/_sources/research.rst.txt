@@ -1,8 +1,8 @@
 .. _Research:
 
-========
-Research
-========
+=============
+Research Work
+============= 
 
 
 **PhD Researcher** | Ruhr University Bochum
@@ -18,6 +18,19 @@ Designed an end-to-end deep reinforcement learning (RL) solution to solve a comp
 - Implemented proactive resource contention management to prevent costly system failures
 
 **Technical Skills:** PyTorch, Weights & Biases, Deep Reinforcement Learning, Curriculum Learning, Monte Carlo Simulation, XGBoost, Industrial AI
+
+
+
+Mindmap
+-------
+
+.. raw:: html
+
+    <div style="max-width: 900px;">
+      <iframe width="100%" height="500" style="border: 1px solid #d0d0d0; border-radius: 6px;" src="https://www.mindomo.com/mindmap/sutco-project-my-contributions-192efed34fa7252681d8849939341d47" frameborder="0" allowfullscreen></iframe>
+    </div>
+
+
 
 .. _Publications:
 ============

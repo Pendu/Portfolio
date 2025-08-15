@@ -8,29 +8,38 @@ Hi 👋, I am Abhijeet Pendyala
    
    .. image:: _static/profile_picture.jpg
       :align: center
-      :height: 200px
+      :height: 300px
 
 
-I am a machine learning engineer with a passion for building scalable and efficient machine learning models. 
+I am a machine learning engineer with a passion for learning, communication and execution. I like mindmaps, survey papers, and reading books.
 
-I am a voracoius reader. I read books of philosophy, psychology, history, economics. In my free time i love to watch  videos from 3blue1brown, veritasium, vsauce, mythbusters etc, you get the idea. 
+This website serves multiple purposes:
 
-I like mindmaps, survey papers,
+* **Extended Curriculum Vitae**: A recap of my professional journey and accomplishments
+* **ML Blog**: A collection of my bite-sized attempts at developing intuitive understanding of machine learning concepts
+* **Personal Knowledge Base**: A centralized place for organizing my thoughts, insights, and continuous learning process
 
-This website acts as a detailed curriculum vitae, a quick peek into my interests and a place to share my machine learning blog posts.
+CV and Resume
+*************
 
+* Download my CV in PDF format: `Abhijeet Pendyala - CV.pdf <https://abhijeet-pendyala.github.io/cv/Abhijeet_Pendyala_CV.pdf>`_
 
-Research Interests
+* Download my Resume in PDF format: `Abhijeet Pendyala - Resume.pdf <https://abhijeet-pendyala.github.io/cv/Abhijeet_Pendyala_Resume.pdf>`_ 
+
+Interests
 ******************
 
 * Reinforcement Learning
 * Optimization
-* Software Development
-* Data Science
+* Low code software development
 
 
 Skills
 ******
+
+.. note::
+
+   This section provides a quick overview of my skills (not exhaustive) and tools that i have used.
 
 .. list-table:: Leadership Skills
    :widths: 25 25 50
@@ -39,86 +48,72 @@ Skills
    * - Category
      - Leadership Skills
      - Description
+   * - **Engineering Leadership**
+     - Strategy, roadmapping, OKRs
+     - Translate business goals into technical direction; create execution roadmaps and measurable outcomes
    * - **Team Management**
-     - Weekly meetings, sprint reviews & sprint retrospectives
-     - Leading cross-functional teams through structured processes 
+     - 1:1s, sprint rituals, performance reviews
+     - Build high-trust teams, facilitate delivery ceremonies, remove blockers, and foster continuous improvement
    * - **Project Management**
-     - Requirements collection from stakeholders, User story mapping 
-     - Converting customer requirements into technical specifications and ensuring alignment with business objectives
+     - Requirements, user story mapping, risk management
+     - Drive projects from discovery to delivery with clear scope, milestones, and stakeholder alignment
+   * - **Architecture & Quality**
+     - Design docs, code reviews, testing strategy
+     - Establish engineering standards, review designs, and ensure reliability via testing and observability
 
-.. list-table:: Technical Skills
-   :widths: 25 25 50
+
+.. list-table:: Technical Skills (Depth & Scope)
+   :widths: 20 35 15 30
    :header-rows: 1
 
-   * - Category
-     - Technology/Tool
-     - Description
+   * - Area
+     - Technologies
+     - Proficiency
+     - Notes (scope, examples)
    * - **Programming**
-     - 🐍 Python
-     - ML/AI development, data analysis, backend services
-   * - 
-     - C++
-     - Systems programming, performance-critical applications
-   * - **Machine Learning**
-     - 🤖 Deep Learning
-     - PyTorch, TensorFlow, Keras for neural networks
-   * - 
-     - Traditional ML
-     - XGBoost, LightGBM for gradient boosting
-   * - 
-     - AutoML
-     - Automated ML pipelines and hyperparameter optimization
+     - Python; C++
+     - Expert; Advanced
+     - Production-grade ML/DS code, CLI tools, data pipelines; performance-sensitive modules in C++
    * - **Reinforcement Learning**
-     - 🔄 Policy Methods
-     - PPO for continuous control problems
-   * - 
-     - Training Strategies
-     - Curriculum Learning for complex tasks
-   * - 
-     - Simulation
-     - Monte Carlo for environment modeling
+     - PPO; curriculum learning; simulation
+     - Advanced
+     - Continuous-control problems; reward shaping; Monte Carlo based evaluation
+   * - **Deep Learning**
+     - PyTorch; TensorFlow/Keras
+     - Expert; Advanced
+     - Model design, training loops, mixed precision, experiment tracking, reproducibility
+   * - **Classical ML**
+     - scikit-learn; XGBoost; LightGBM
+     - Expert; Expert; Advanced
+     - Feature engineering, calibration, cross-validation, model diagnostics
+   * - **Data & Analysis**
+     - Pandas; NumPy; SciPy; Statsmodels
+     - Expert
+     - Data wrangling, statistical testing, time-series preprocessing
    * - **MLOps**
-     - ⚙️ Experiment Tracking
-     - Weights & Biases for experiment management and tracking
-   * - 
-     - Model and Data Versioning
-     - MLflow, DVC for version control of models and datasets
-   * - 
-     - Containerization
-     - Docker, Kubernetes for orchestration and deployment
-   * - 
-     - Version Control
-     - Git, GitHub Actions for CI/CD pipelines
-   * - **Data Science**
-     - 📊 Data Processing
-     - Pandas, NumPy for data manipulation and analysis
-   * - 
-     - Statistical Analysis
-     - Scikit-learn, SciPy, Statsmodels for statistical modeling
-   * - 
-     - Visualization
-     - Matplotlib, Seaborn, Plotly, Panel-Holoviz for data visualization
-   * - **Web Development**
-     - 🌐 Backend Frameworks
-     - Django, FastAPI, Flask for web applications
-   * - 
-     - Database Systems
-     - PostgreSQL, MySQL, MongoDB for data storage
-   * - **Cloud & DevOps**
-     - ☁️ Cloud Platforms
-     - Google Cloud Platform for ML infrastructure and deployment
-   * - **Software Development**
-     - 🔍 Testing & Quality
-     - Pytest and Unittest for automated testing and quality assurance
-   * - 
-     - Packaging & Deployment
-     - Poetry, pyenv for package management and deployment
+     - Weights & Biases; MLflow; DVC
+     - Expert; Advanced; Advanced
+     - Experiment tracking, model registry, data/model versioning, lineage
+   * - **Packaging & CI/CD**
+     - Poetry; pre-commit; GitHub Actions
+     - Advanced
+     - Build automation, quality gates, style/lint hooks, release workflows
+   * - **Deployment & Runtime**
+     - Docker; Kubernetes; FastAPI
+     - Advanced
+     - Containerized APIs, autoscaling, health checks, observability
+   * - **Storage & Messaging**
+     - PostgreSQL; MongoDB; (basics) Redis
+     - Proficient
+     - OLTP schemas, indexing, simple caching patterns
+   * - **Visualization**
+     - Matplotlib; Seaborn; Plotly; Panel-Holoviz
+     - Proficient
+     - Exploratory analysis dashboards and publication-ready figures
    * - **Documentation & Writing**
-     - 📝 Documentation
-     - Sphinx, Markdown for technical documentation
-   * - 
-     - Technical Report Writing
-     - LaTeX, Overleaf for technical reports and academic papers
+     - Sphinx; Markdown; LaTeX/Overleaf
+     - Expert
+     - API docs, architecture docs, technical reports and experiment write-ups
 
 
 .. _contact:
@@ -152,10 +147,9 @@ Contact
    :maxdepth: 2
    :caption: Table of Contents
 
-   work_experience
    research
-   cv
-   activities
+   ml_software
+   misc
    ml_blog/ml_blog
    book_reviews/book_reviews
    
