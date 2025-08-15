@@ -7,6 +7,14 @@ PhD Research
 
 Under the supervision of **Professor Tobias Glasmachers** at Ruhr University Bochum, my research focused on developing an end-to-end deep reinforcement learning solution for a complex industrial control system. I designed a hybrid approach that combines a Proximal Policy Optimization (PPO) agent, trained with a sophisticated curriculum learning strategy, with a predictive model for operational safety. This work culminated in the creation of 'ContainerGym,' a new open-source benchmark for industrial AI, and provided key insights into managing resource bottlenecks and preventing system failures.
 
+.. figure:: plant_layout.png
+   :alt: Industrial plant layout showing container management system
+   :align: center
+   :width: 90%
+   :figclass: align-center
+
+   **Industrial Plant Layout: Schematic diagram of the container management system with 12 containers, conveyor belts, and a central processing unit (PU)**
+
 **************************************************
 Foundational Work: From Data to Problem Formulation
 **************************************************
@@ -51,6 +59,14 @@ To address this gap, I designed and released **ContainerGym**, an open-source RL
 **The Outcome:**
 
 By using ContainerGym to benchmark standard RL algorithms like PPO, TRPO, and DQN, I was able to empirically demonstrate their primary limitations. The results showed that vanilla agents struggle to handle the delayed rewards and strategic foresight required by the task, which motivated the need for my subsequent research into more advanced techniques.
+
+.. figure:: example.gif
+   :alt: ContainerGym environment visualization during evaluation
+   :align: center
+   :width: 85%
+   :figclass: align-center
+
+   **ContainerGym Environment: Dynamic visualization showing the container management system in action during reinforcement learning evaluation**
 
 .. _Advanced_RL_Solutions:
 
@@ -100,9 +116,9 @@ Mindmap
 
 .. _Phd Thesis:
 
-**********
-Phd Thesis
-**********
+****************************
+Thesis Abstract and Download
+****************************
 
 **Title:** Optimizing Industrial Process through Reinforcement Learning
 **Supervisor:** Prof. Dr. Tobias Glasmachers
