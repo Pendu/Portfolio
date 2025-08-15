@@ -63,8 +63,20 @@ html_css_files = [
 #     "source_directory": "source/",
 # }
 
-#Remove sidebars for a cleaner look    
+# Remove sidebars for a cleaner look and better image floating
 html_sidebars = {"**": []}
+
+# Additional theme options for better layout
+html_theme_options = {
+    "use_edit_page_button": False,
+    "logo": {
+        "text": "Home",
+    },
+    "header_links_before_dropdown": 6,
+    "show_nav_level": 1,
+    "show_toc_level": 1,
+    "navbar_align": "left",
+}
 
 # -- Options for bibtex ----------------------------------------
 bibtex_bibfiles = ["refs.bib"]

@@ -4,11 +4,10 @@
 Hi 👋, I am Abhijeet Pendyala
 ******************************
 
-.. sidebar:: 
-   
-   .. image:: _static/profile_picture.jpg
-      :align: center
-      :height: 300px
+.. image:: _static/profile_picture.jpg
+   :align: right
+   :height: 300px
+   :alt: Abhijeet Pendyala at ECML conference
 
 
 I am a machine learning engineer with a passion for learning, communication and execution. I like mindmaps, survey papers, and reading books.
