@@ -49,19 +49,19 @@ Featured Publications
 -------------------
 * **Curriculum RL meets Monte Carlo Planning:** Optimization of a Real World Container Management Problem
 
-  *A. Pendyala & T. Glasmachers, **ECML 2025***
+  *A. Pendyala & T. Glasmachers*, **ECML 2025**
 
 * **Solving a Real-World Optimization Problem:** Using Proximal Policy Optimization with Curriculum Learning and Reward Engineering
 
-  *A. Pendyala, A. Atamna & T. Glasmachers, **ECML 2024***
+  *A. Pendyala, A. Atamna & T. Glasmachers*, **ECML 2024**
 
 * **ContainerGym:** A Real-World Reinforcement Learning Benchmark for Resource Allocation
 
-  *A. Pendyala, J. Dettmer, T. Glasmachers & A. Atamna, **LOD 2023***
+  *A. Pendyala, J. Dettmer, T. Glasmachers & A. Atamna*, **LOD 2023**
 
 * **Online Budgeted Stochastic Coordinate Ascent:** For Large-Scale Kernelized Dual Support Vector Machine Training
 
-  *S. Qaadan, A. Pendyala et al., **ICPRAM 2020***
+  *S. Qaadan, A. Pendyala et al.*, **ICPRAM 2020**
 
 ML Software Engineering: EcoKI Platform
 ---------------------------------------
