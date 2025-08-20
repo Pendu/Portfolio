@@ -9,7 +9,7 @@ Hi 👋, I'm Abhijeet Pendyala
    :height: 300px
    :alt: Abhijeet Pendyala, PhD Researcher and ML Engineer
 
-I am a **Machine Learning Engineer and PhD researcher** with 7+ years of experience in **Industrial AI**, **Computer Vision**, and **platform development**. My expertise lies in designing and deploying scalable, production-grade ML systems that solve complex, real-world problems. I translate state-of-the-art research into robust, production-grade software, leveraging expertise in **MLOps**, **scalable system design**, and **model optimization for edge devices**.
+I am a **full-stack ML software developer and PhD researcher** with 7+ years of experience in **Industrial AI**, **Computer Vision**, and **platform development**. My expertise lies in designing and deploying scalable, production-grade ML systems that solve complex, real-world problems. My experience goes beyond using off-the-shelf libraries; I excel at taking raw, messy data from industrial systems and transforming it into actionable insights. I design and develop novel algorithms to overcome the limitations of standard approaches and build reusable, modular ML platforms with comprehensive testing protocols and modern MLOps practices for seamless deployment.
 
 ------------------
 

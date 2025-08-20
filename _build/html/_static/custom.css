@@ -25,3 +25,31 @@
     display: flex;
     justify-content: center;
 }
+
+/* Publication cards styling */
+.publication-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 20px;
+    margin: 15px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Highlight grid styling */
+.highlight-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    margin: 20px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 10px;
+}
+
+/* Profile image enhancement */
+img[alt*="Abhijeet Pendyala"] {
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    margin-left: 20px;
+}
