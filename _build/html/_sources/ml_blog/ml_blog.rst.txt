@@ -32,9 +32,7 @@ Welcome to my machine learning blog! Here you'll find in-depth articles on vario
 **Upcoming Posts**
 ~~~~~~~~~~~~~~~~~~
 
-* **Neural Network Architectures** - Deep dive into CNN, RNN, and Transformer designs
 * **Reinforcement Learning Fundamentals** - From Q-learning to policy gradients
-* **ML Model Interpretability** - Techniques for understanding model decisions
 * **Production ML Systems** - Deployment, monitoring, and maintenance strategies
 
 
