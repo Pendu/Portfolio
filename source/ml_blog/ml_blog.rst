@@ -1,6 +1,6 @@
 .. _ml_blog:
 
-ML Blog
+Blog
 ========
 
 Welcome to my machine learning blog! Here you'll find in-depth articles on various ML topics, from fundamental concepts to advanced techniques.

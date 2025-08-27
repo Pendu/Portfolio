@@ -11,6 +11,10 @@ Hi 👋, I'm Abhijeet Pendyala
 
 I am a **PhD researcher and full-stack ML software developer** with 7+ years of experience in **Industrial AI**, **Computer Vision**, and **platform development**. My expertise lies in designing and deploying scalable, production-grade ML systems that solve complex, real-world problems. My experience goes beyond using off-the-shelf libraries; I excel at taking raw, messy data from industrial systems and transforming it into actionable insights. I design and develop novel algorithms to overcome the limitations of standard approaches and build reusable, modular ML platforms with comprehensive testing protocols and modern MLOps practices for seamless deployment.
 
+.. note::
+   
+   **My Journey Through the Four Paradigms of Science**: From theoretical foundations to data-driven AI, discover how my path mirrors the evolution of scientific discovery itself. Read my complete story: :ref:`climbing_the_ladder`
+
 ------------------
 **Core Expertise**
 =================
@@ -76,6 +80,15 @@ I have extensive experience developing machine learning solutions for computer v
 
 * **Autonomous Driving (Kopernikus Automotive):** Developed and optimized perception models for object detection and localization (RetinaNet, YOLO) for autonomous vehicles. Implemented model compression techniques with TensorRT for deployment on edge devices.
 * **Fish Recognition App (Freelance):** Helped to develop an app to identify fish species, predict length, and detect key points (mouth, tail) using PyTorch and Keras image regression models. This involved extensive work on data augmentation and synthetic dataset generation.
+------------------
+
+**My Personal Journey**
+======================
+
+My path through the world of science and AI has been computationally irreducible—there were no shortcuts, only step-by-step discovery. From the theoretical foundations of first principles to the data-driven frontiers of artificial intelligence, my journey mirrors the evolution of scientific discovery itself.
+
+:ref:`Read my complete story: Climbing the Ladder of Abstraction <climbing_the_ladder>`
+
 ------------------
 
 **Get in Touch**
