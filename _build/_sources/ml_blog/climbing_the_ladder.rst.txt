@@ -12,9 +12,9 @@ Climbing the Ladder of Abstraction: My Computationally Irreducible Journey
 
    **The Evolution of Scientific Paradigms**: A visual journey through the four paradigms of scientific discovery, from empirical experimentation (1600s) through model-based theoretical science (1950s) to computational simulations and modern data-driven AI approaches (2000s). Source: [9]_
 
-The history of science is a centuries-long conversation on how we know what we know—a dialectic that began with Plato's world of pure forms and Aristotle's empirical observations, and which found its synthesis in the Scientific Revolution. When Galileo and Newton fused reason and observation into the scientific method, they gave humanity a systematic way to learn. 
+The history of science is a centuries-long conversation on how we know what we know, a dialectic that began with Plato's world of pure forms and Aristotle's empirical observations, and which found its synthesis in the Scientific Revolution. When Galileo and Newton fused reason and observation into the scientific method, they gave humanity a systematic way to learn. 
 
-My own journey began with a personal revolution: an awakening to this same rigorous, hypothesis-driven way of thinking. Driven by a need to solve complex problems by finding their most elegant, fundamental solution, I unknowingly embarked on a path that mirrors the evolution of scientific discovery itself—a climb up the ladder of abstraction from the axioms of theoretical mechanics, through empirical validation and digital simulation, to the data-driven frontiers of AI. 
+My own journey began with a personal revolution: an awakening to this same rigorous, hypothesis-driven way of thinking. Driven by a need to solve complex problems by finding their most elegant, fundamental solution, I unknowingly embarked on a path that mirrors the evolution of scientific discovery itself: a climb up the ladder of abstraction from the axioms of theoretical mechanics, through empirical validation and digital simulation, to the data-driven frontiers of AI. 
 
 I later understood this journey to be **computationally irreducible**: there was no shortcut to this understanding; like the universe itself, it had to be run, step by step.
 
@@ -27,7 +27,7 @@ Paradigm 1: The Theoretical World of First Principles
 
 **The Foundation of Mathematical Reasoning**
 
-For two millennia, mathematics was built upon the unshakeable bedrock of Euclid's five postulates. Yet the fifth postulate—the parallel axiom, which essentially states that parallel lines never meet—remained a profound puzzle. Generations of mathematicians attempted to prove it from the others, or break it to find a contradiction. In doing so, they achieved something far more revolutionary: they discovered entirely new, consistent non-Euclidean geometries. Einstein's general theory of relativity revealed that gravity is not a force but a curvature of spacetime. Riemann's elliptic geometry provided the essential mathematical language to describe how the universe works on its largest scales [1]_. This is the ultimate power of the first paradigm: exploring the limits of a system doesn't just test it; it can unlock entirely new worlds.
+For two millennia, mathematics was built upon the unshakeable bedrock of Euclid's five postulates. Yet the fifth postulate, the parallel axiom, which essentially states that parallel lines never meet, remained a profound puzzle. Generations of mathematicians attempted to prove it from the others, or break it to find a contradiction. In doing so, they achieved something far more revolutionary: they discovered entirely new, consistent non-Euclidean geometries. Einstein's general theory of relativity revealed that gravity is not a force but a curvature of spacetime. Riemann's elliptic geometry provided the essential mathematical language to describe how the universe works on its largest scales [1]_. This is the ultimate power of the first paradigm: exploring the limits of a system doesn't just test it; it can unlock entirely new worlds.
 
 In retrospect, my own entry into this paradigm was the severe intellectual test of preparing for India's competitive exams like IIT-JEE and BITSAT. This was more than academic; it was a crucible that forged mental habits of precise abstraction and systematic analysis. Navigating the deep waters of texts like I.E. Irodov demanded peeling back layers of complexity to reach essential truths. The enduring relevance of this training is now evident in a surprising place: artificial intelligence. Today, the world's most advanced LLMs are benchmarked against these same exams, which have become a global standard for the limits of creative reasoning in both humans and machines.
 
@@ -44,10 +44,9 @@ For me, the most powerful intuition for the empirical paradigm comes from a surp
 
 **My Personal Journey Through the Empirical Paradigm**
 
-My own need to connect theory with practice truly took shape during my bachelor's in Mechanical Engineering. In the workshop, I experienced the surreal satisfaction of building physical things—designing gears on a lathe, programming CNC machines, and doing spot welding. I believe everyone should have this foundational experience of experimentation. 
+My own need to connect theory with practice truly took shape during my bachelor's in Mechanical Engineering. In the workshop, I experienced the surreal satisfaction of building physical things, designing gears on a lathe, programming CNC machines, and doing spot welding. I believe everyone should have this foundational experience of experimentation. 
 
 This purely physical work began to merge with the digital during my internship at the **National Aerospace Laboratories**, where my bachelor's thesis involved predicting the material properties of a new hybrid composite. For the first time, I was using simulation and mathematical modeling in MATLAB to represent a physical system. 
-
 This initial taste of bridging the empirical and computational worlds at scale led directly to my first job out of college at **Fiat Chrysler Automobiles**. As part of the engine testing and development team, I was immersed in a data-rich environment, analyzing high-dimensional data streams from engine dynamometers. My work was a direct dialogue between principle and practice:
 
 * Using statistical methods to perform root-cause analysis on performance anomalies
@@ -67,7 +66,7 @@ But this vision comes with a catch, a concept Wolfram calls **"computational irr
 
 .. warning::
    
-   **Computational Irreducibility**: For many complex systems, there is no algorithmic shortcut to predict the outcome—you must run the full simulation to see what happens.
+   **Computational Irreducibility**: For many complex systems, there is no algorithmic shortcut to predict the outcome, you must run the full simulation to see what happens.
 
 **My Transition to the Computational Paradigm**
 
@@ -90,7 +89,7 @@ Paradigm 4: The Data-Driven World of Intelligent Learning
 
 **The Age of AI and the Bitter Lesson**
 
-In 2016, a machine played a move that shocked the world. In its match against Go grandmaster Lee Sedol, DeepMind's AlphaGo played "Move 37"—a move so alien and creative it was initially thought to be a mistake. It wasn't. It was a glimpse of true intelligence, discovered not from human instruction, but through self-play [4]_. 
+In 2016, a machine played a move that shocked the world. In its match against Go grandmaster Lee Sedol, DeepMind's AlphaGo played "Move 37", a move so alien and creative it was initially thought to be a mistake. It wasn't. It was a glimpse of true intelligence, discovered not from human instruction, but through self-play [4]_. 
 
 This was the ultimate validation of what AI researcher Rich Sutton calls "The Bitter Lesson": the biggest breakthroughs consistently come not from clever human-designed knowledge, but from general-purpose methods that leverage massive amounts of computation [5]_. The lesson, underpinned by the Universal Approximation Theorem [6]_, is to stop hand-crafting rules and instead build systems that can learn them from data. This is the fourth paradigm.
 
@@ -100,7 +99,7 @@ This was the ultimate validation of what AI researcher Rich Sutton calls "The Bi
 
 **My PhD Research: Applying the Fourth Paradigm**
 
-My PhD research is a direct application of this principle. I focus on deep reinforcement learning (RL)—a quintessential general-purpose method that allows an agent to learn optimal behavior through trial and error. Faced with a complex industrial control problem riddled with sparse rewards and conflicting objectives, I didn't attempt to hand-craft a solution. 
+My PhD research is a direct application of this principle. I focus on deep reinforcement learning (RL), a quintessential general-purpose method that allows an agent to learn optimal behavior through trial and error. Faced with a complex industrial control problem riddled with sparse rewards and conflicting objectives, I didn't attempt to hand-craft a solution. 
 
 Instead, I trusted the Bitter Lesson, employing methods like:
 
@@ -131,9 +130,9 @@ Only now, in retrospect, can I see the line connecting a foundation in first pri
 
 .. epigraph::
    
-   The purpose is to architect the solutions for the next order of complexity and, perhaps, to help build the partner that will define the next paradigm.
+   The purpose is to architect the solutions for the next order of complexity and, perhaps, to help build an AI sparring partner that will define the next paradigm.
    
-   -- *My personal mission statement*
+   -- *My dream*
 
 References
 ==========
