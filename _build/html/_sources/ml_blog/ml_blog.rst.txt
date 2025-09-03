@@ -1,6 +1,6 @@
 .. _ml_blog:
 
-ML Blog
+Blog
 ========
 
 Welcome to my machine learning blog! Here you'll find in-depth articles on various ML topics, from fundamental concepts to advanced techniques.
@@ -13,11 +13,18 @@ Welcome to my machine learning blog! Here you'll find in-depth articles on vario
    :numbered:
    :caption: Table of Contents
 
+   climbing_the_ladder
    assumptions_in_machine_learning
    inductive_biases_in_machine_learning
+   
 
 **Article Details**
 ~~~~~~~~~~~~~~~~~~
+
+:doc:`climbing_the_ladder`
+   **Published:** August 2025 | **Reading Time:** 15-20 minutes
+   
+   A deep dive into the four paradigms of scientific discovery, from empirical experimentation to computational simulations and data-driven AI. Explore how my journey mirrors the evolution of scientific discovery and the importance of computational irreducibility.
 
 :doc:`assumptions_in_machine_learning`
    **Published:** August 2025 | **Reading Time:** 15-20 minutes

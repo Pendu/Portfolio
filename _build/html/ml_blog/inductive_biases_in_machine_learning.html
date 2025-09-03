@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>2. Inductive Biases of ML Models &#8212; Personal Website</title>
+    <title>3. Inductive Biases of ML Models &#8212; Personal Website</title>
   
   
   
@@ -46,7 +46,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'ml_blog/inductive_biases_in_machine_learning';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="1. A Deep Dive into ML Model Assumptions" href="assumptions_in_machine_learning.html" />
+    <link rel="prev" title="2. A Deep Dive into ML Model Assumptions" href="assumptions_in_machine_learning.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -135,7 +135,7 @@
     
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="ml_blog.html">
-    ML Blog
+    Blog
   </a>
 </li>
 
@@ -214,7 +214,7 @@
     
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="ml_blog.html">
-    ML Blog
+    Blog
   </a>
 </li>
 
@@ -276,9 +276,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="ml_blog.html" class="nav-link">ML Blog</a></li>
+    <li class="breadcrumb-item"><a href="ml_blog.html" class="nav-link">Blog</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><span class="section-number">2. </span>Inductive Biases of ML Models</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><span class="section-number">3. </span>Inductive Biases of ML Models</span></li>
   </ul>
 </nav>
 </div>
@@ -296,9 +296,9 @@
                 <article class="bd-article">
                   
   <section id="inductive-biases-of-ml-models">
-<span id="inductive-biases-in-machine-learning"></span><h1><span class="section-number">2. </span>Inductive Biases of ML Models<a class="headerlink" href="#inductive-biases-of-ml-models" title="Link to this heading">#</a></h1>
+<span id="inductive-biases-in-machine-learning"></span><h1><span class="section-number">3. </span>Inductive Biases of ML Models<a class="headerlink" href="#inductive-biases-of-ml-models" title="Link to this heading">#</a></h1>
 <section id="preface-assumptions-vs-inductive-bias">
-<h2><span class="section-number">2.1. </span>Preface: Assumptions vs. Inductive Bias<a class="headerlink" href="#preface-assumptions-vs-inductive-bias" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">3.1. </span>Preface: Assumptions vs. Inductive Bias<a class="headerlink" href="#preface-assumptions-vs-inductive-bias" title="Link to this heading">#</a></h2>
 <p>This guide is dedicated to the <em>inductive biases</em> of models, which are distinct from, yet complementary to, the formal <em>assumptions</em> discussed previously. It is helpful to think of the distinction as follows:</p>
 <ul class="simple">
 <li><p><strong>The “Assumptions” Guide</strong> is like a <strong>mechanic’s checklist</strong>. It details the formal, often statistical, conditions that must be met for a model to be statistically valid and for its theoretical guarantees (like being unbiased) to hold. It answers the question: <em>“What conditions must my data satisfy for this model to work as designed?”</em></p></li>
@@ -307,9 +307,9 @@
 <p>A deep understanding requires both perspectives: the philosophical ‘why’ (inductive bias) and the practical ‘how-to-validate’ (assumptions).</p>
 </section>
 <section id="general-concepts">
-<h2><span class="section-number">2.2. </span>General Concepts<a class="headerlink" href="#general-concepts" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">3.2. </span>General Concepts<a class="headerlink" href="#general-concepts" title="Link to this heading">#</a></h2>
 <section id="what-is-inductive-bias">
-<h3><span class="section-number">2.2.1. </span>What is Inductive Bias?<a class="headerlink" href="#what-is-inductive-bias" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.2.1. </span>What is Inductive Bias?<a class="headerlink" href="#what-is-inductive-bias" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p><strong>Inductive bias</strong> refers to the set of assumptions that a learning algorithm uses to make predictions on unseen data. Since the training data is always finite, a model must make assumptions to generalize beyond the exact examples it has seen. Inductive bias is the “prior knowledge” or “built-in beliefs” of a model. Every machine learning model has an inductive bias; without one, a model could only memorize the training data and would be unable to make any predictions on new inputs. It is the component that makes machine <em>learning</em> possible.</p>
 <p><strong>The Problem: Mismatched Bias</strong></p>
@@ -330,7 +330,7 @@
 </ul>
 </section>
 <section id="regularization-as-an-inductive-bias">
-<h3><span class="section-number">2.2.2. </span>Regularization as an Inductive Bias<a class="headerlink" href="#regularization-as-an-inductive-bias" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.2.2. </span>Regularization as an Inductive Bias<a class="headerlink" href="#regularization-as-an-inductive-bias" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>Regularization techniques are explicit methods for injecting an inductive bias into a model. While a model’s architecture provides a structural bias, regularization provides a mathematical bias on the parameters themselves. It guides the learning algorithm towards a “simpler” solution from the set of all possible solutions that fit the data.</p>
 <ul class="simple">
@@ -353,9 +353,9 @@
 </section>
 </section>
 <section id="model-specific-biases">
-<h2><span class="section-number">2.3. </span>Model-Specific Biases<a class="headerlink" href="#model-specific-biases" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">3.3. </span>Model-Specific Biases<a class="headerlink" href="#model-specific-biases" title="Link to this heading">#</a></h2>
 <section id="linear-models-the-bias-of-linearity">
-<h3><span class="section-number">2.3.1. </span>Linear Models: The Bias of Linearity<a class="headerlink" href="#linear-models-the-bias-of-linearity" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.1. </span>Linear Models: The Bias of Linearity<a class="headerlink" href="#linear-models-the-bias-of-linearity" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>The primary inductive bias of all linear models (e.g., Linear and Logistic Regression) is that the relationship between the features and the target (or the log-odds of the target, for logistic regression) is <strong>linear</strong>. The model assumes that a change in the target variable for a unit change in a feature is constant, regardless of the feature’s value. This is a very strong assumption that imposes a simple, additive structure on the problem.</p>
 <p><strong>The Problem: When It Breaks Down</strong></p>
@@ -376,7 +376,7 @@
 <p>—</p>
 </section>
 <section id="tree-based-models-the-bias-of-hierarchical-axis-aligned-splits">
-<h3><span class="section-number">2.3.2. </span>Tree-Based Models: The Bias of Hierarchical, Axis-Aligned Splits<a class="headerlink" href="#tree-based-models-the-bias-of-hierarchical-axis-aligned-splits" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.2. </span>Tree-Based Models: The Bias of Hierarchical, Axis-Aligned Splits<a class="headerlink" href="#tree-based-models-the-bias-of-hierarchical-axis-aligned-splits" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>The inductive bias of tree-based models (Decision Trees, Random Forests, GBTs) is that the feature space is separable by a series of <strong>hierarchical, axis-aligned splits</strong>. The model believes that the best way to partition the data is by asking a sequence of simple questions about individual features (e.g., is <cite>age</cite> &gt; 30?), creating a tree structure. This is a non-parametric approach that does not assume a specific functional form for the decision boundary.</p>
 <p><strong>The Problem: When It Breaks Down</strong></p>
@@ -394,7 +394,7 @@
 <p>—</p>
 </section>
 <section id="ensemble-biases-bagging-vs-boosting">
-<h3><span class="section-number">2.3.3. </span>Ensemble Biases: Bagging vs. Boosting<a class="headerlink" href="#ensemble-biases-bagging-vs-boosting" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.3. </span>Ensemble Biases: Bagging vs. Boosting<a class="headerlink" href="#ensemble-biases-bagging-vs-boosting" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>Ensembling methods combine multiple base models to produce a stronger final model. Bagging and Boosting are the two dominant strategies, and they have fundamentally different inductive biases.</p>
 <ul class="simple">
@@ -412,7 +412,7 @@
 <p>—</p>
 </section>
 <section id="instance-based-models-knn-the-bias-of-locality">
-<h3><span class="section-number">2.3.4. </span>Instance-Based Models (KNN): The Bias of Locality<a class="headerlink" href="#instance-based-models-knn-the-bias-of-locality" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.4. </span>Instance-Based Models (KNN): The Bias of Locality<a class="headerlink" href="#instance-based-models-knn-the-bias-of-locality" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>The inductive bias of K-Nearest Neighbors (KNN) is one of <strong>locality</strong> or <strong>smoothness</strong>. It assumes that data points that are close to each other in the feature space (i.e., are “neighbors”) are likely to share the same label. This is a very intuitive bias. Unlike other models, it doesn’t try to learn a global function; instead, it makes a local decision for each new point based on its immediate surroundings. The strength and nature of this bias are directly controlled by the choice of <cite>k</cite> (the number of neighbors) and the distance metric.</p>
 <p><strong>The Problem: When It Breaks Down</strong></p>
@@ -431,7 +431,7 @@
 <p>—</p>
 </section>
 <section id="cnns-the-bias-of-spatial-structure">
-<h3><span class="section-number">2.3.5. </span>CNNs: The Bias of Spatial Structure<a class="headerlink" href="#cnns-the-bias-of-spatial-structure" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.5. </span>CNNs: The Bias of Spatial Structure<a class="headerlink" href="#cnns-the-bias-of-spatial-structure" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>Convolutional Neural Networks (CNNs) are a specialized type of neural network whose inductive biases are perfectly matched to grid-like data, such as images. Their architecture is built on two powerful “beliefs” about the data:</p>
 <ul class="simple">
@@ -454,7 +454,7 @@
 <p>—</p>
 </section>
 <section id="rnns-the-bias-of-sequentiality">
-<h3><span class="section-number">2.3.6. </span>RNNs: The Bias of Sequentiality<a class="headerlink" href="#rnns-the-bias-of-sequentiality" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.6. </span>RNNs: The Bias of Sequentiality<a class="headerlink" href="#rnns-the-bias-of-sequentiality" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>Recurrent Neural Networks (RNNs) are designed for sequential data. Their core inductive biases are <strong>sequential dependence</strong> and <strong>time invariance</strong>.</p>
 <ul class="simple">
@@ -474,7 +474,7 @@
 <p>—</p>
 </section>
 <section id="transformers-the-bias-of-all-pairs-interaction">
-<h3><span class="section-number">2.3.7. </span>Transformers: The Bias of All-Pairs Interaction<a class="headerlink" href="#transformers-the-bias-of-all-pairs-interaction" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.7. </span>Transformers: The Bias of All-Pairs Interaction<a class="headerlink" href="#transformers-the-bias-of-all-pairs-interaction" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>The core inductive bias of the Transformer architecture, via its <strong>self-attention mechanism</strong>, is that the data has the structure of a <strong>fully-connected graph</strong>. It assumes that any element in a sequence can be directly related to any other element, regardless of their distance. This is a very weak bias compared to an RNN’s strict sequentiality or a CNN’s locality. The model “believes” that long-range, contextual dependencies are paramount, and it learns the structure of these dependencies from the data itself rather than having it hard-coded in the architecture.</p>
 <p><strong>The Problem: When It Breaks Down</strong></p>
@@ -491,7 +491,7 @@
 <p>—</p>
 </section>
 <section id="graph-neural-networks-the-bias-of-relational-structure">
-<h3><span class="section-number">2.3.8. </span>Graph Neural Networks: The Bias of Relational Structure<a class="headerlink" href="#graph-neural-networks-the-bias-of-relational-structure" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.8. </span>Graph Neural Networks: The Bias of Relational Structure<a class="headerlink" href="#graph-neural-networks-the-bias-of-relational-structure" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>The inductive bias of a Graph Neural Network (GNN) is that the data is structured as a <strong>graph</strong>, and the relationships (edges) between entities (nodes) are fundamental. Its core biases are:</p>
 <ul class="simple">
@@ -513,7 +513,7 @@
 <p>—</p>
 </section>
 <section id="bayesian-models-the-bias-of-the-prior">
-<h3><span class="section-number">2.3.9. </span>Bayesian Models: The Bias of the Prior<a class="headerlink" href="#bayesian-models-the-bias-of-the-prior" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.9. </span>Bayesian Models: The Bias of the Prior<a class="headerlink" href="#bayesian-models-the-bias-of-the-prior" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>The inductive bias in Bayesian modeling is made explicit through the choice of the <strong>prior distribution</strong>, <span class="math notranslate nohighlight">\(P(\theta)\)</span>. The prior represents our belief about the model parameters <span class="math notranslate nohighlight">\(\theta\)</span> <em>before</em> we have seen any data. By applying Bayes’ theorem, we update this prior belief with the evidence from the data (the likelihood) to arrive at a posterior distribution, <span class="math notranslate nohighlight">\(P(\theta|X) \propto P(X|\theta)P(\theta)\)</span>. The prior is a powerful mechanism for injecting domain knowledge and regularizing the model.</p>
 <p><strong>The Problem: When It Breaks Down</strong></p>
@@ -531,7 +531,7 @@
 <p>—</p>
 </section>
 <section id="optimizer-bias-the-bias-of-the-algorithm-itself">
-<h3><span class="section-number">2.3.10. </span>Optimizer Bias: The Bias of the Algorithm Itself<a class="headerlink" href="#optimizer-bias-the-bias-of-the-algorithm-itself" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">3.3.10. </span>Optimizer Bias: The Bias of the Algorithm Itself<a class="headerlink" href="#optimizer-bias-the-bias-of-the-algorithm-itself" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>Beyond the explicit bias of the model architecture and the mathematical bias of regularization, there is a third, more subtle form: the <strong>implicit inductive bias of the optimization algorithm</strong>. When multiple solutions exist that can perfectly fit the training data (the underdetermined case, common in deep learning), the choice of optimizer (e.g., SGD) and its hyperparameters (e.g., learning rate, batch size) will systematically lead it to converge to one specific type of solution over others.</p>
 <p><strong>The Problem: Understanding Generalization in Overparameterized Models</strong></p>
@@ -562,7 +562,7 @@
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title"><span class="section-number">1. </span>A Deep Dive into ML Model Assumptions</p>
+        <p class="prev-next-title"><span class="section-number">2. </span>A Deep Dive into ML Model Assumptions</p>
       </div>
     </a>
 </div>
@@ -584,23 +584,23 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preface-assumptions-vs-inductive-bias">2.1. Preface: Assumptions vs. Inductive Bias</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-concepts">2.2. General Concepts</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-inductive-bias">2.2.1. What is Inductive Bias?</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regularization-as-an-inductive-bias">2.2.2. Regularization as an Inductive Bias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#preface-assumptions-vs-inductive-bias">3.1. Preface: Assumptions vs. Inductive Bias</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#general-concepts">3.2. General Concepts</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#what-is-inductive-bias">3.2.1. What is Inductive Bias?</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#regularization-as-an-inductive-bias">3.2.2. Regularization as an Inductive Bias</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specific-biases">2.3. Model-Specific Biases</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-models-the-bias-of-linearity">2.3.1. Linear Models: The Bias of Linearity</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tree-based-models-the-bias-of-hierarchical-axis-aligned-splits">2.3.2. Tree-Based Models: The Bias of Hierarchical, Axis-Aligned Splits</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-biases-bagging-vs-boosting">2.3.3. Ensemble Biases: Bagging vs. Boosting</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-based-models-knn-the-bias-of-locality">2.3.4. Instance-Based Models (KNN): The Bias of Locality</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cnns-the-bias-of-spatial-structure">2.3.5. CNNs: The Bias of Spatial Structure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rnns-the-bias-of-sequentiality">2.3.6. RNNs: The Bias of Sequentiality</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers-the-bias-of-all-pairs-interaction">2.3.7. Transformers: The Bias of All-Pairs Interaction</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-neural-networks-the-bias-of-relational-structure">2.3.8. Graph Neural Networks: The Bias of Relational Structure</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-models-the-bias-of-the-prior">2.3.9. Bayesian Models: The Bias of the Prior</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizer-bias-the-bias-of-the-algorithm-itself">2.3.10. Optimizer Bias: The Bias of the Algorithm Itself</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#model-specific-biases">3.3. Model-Specific Biases</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#linear-models-the-bias-of-linearity">3.3.1. Linear Models: The Bias of Linearity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#tree-based-models-the-bias-of-hierarchical-axis-aligned-splits">3.3.2. Tree-Based Models: The Bias of Hierarchical, Axis-Aligned Splits</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ensemble-biases-bagging-vs-boosting">3.3.3. Ensemble Biases: Bagging vs. Boosting</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#instance-based-models-knn-the-bias-of-locality">3.3.4. Instance-Based Models (KNN): The Bias of Locality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#cnns-the-bias-of-spatial-structure">3.3.5. CNNs: The Bias of Spatial Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#rnns-the-bias-of-sequentiality">3.3.6. RNNs: The Bias of Sequentiality</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#transformers-the-bias-of-all-pairs-interaction">3.3.7. Transformers: The Bias of All-Pairs Interaction</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#graph-neural-networks-the-bias-of-relational-structure">3.3.8. Graph Neural Networks: The Bias of Relational Structure</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesian-models-the-bias-of-the-prior">3.3.9. Bayesian Models: The Bias of the Prior</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#optimizer-bias-the-bias-of-the-algorithm-itself">3.3.10. Optimizer Bias: The Bias of the Algorithm Itself</a></li>
 </ul>
 </li>
 </ul>

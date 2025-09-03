@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>1. A Deep Dive into ML Model Assumptions &#8212; Personal Website</title>
+    <title>2. A Deep Dive into ML Model Assumptions &#8212; Personal Website</title>
   
   
   
@@ -46,8 +46,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'ml_blog/assumptions_in_machine_learning';</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="2. Inductive Biases of ML Models" href="inductive_biases_in_machine_learning.html" />
-    <link rel="prev" title="ML Blog" href="ml_blog.html" />
+    <link rel="next" title="3. Inductive Biases of ML Models" href="inductive_biases_in_machine_learning.html" />
+    <link rel="prev" title="1. Climbing the Ladder of Abstraction: My Computationally Irreducible Journey" href="climbing_the_ladder.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   <meta name="docsearch:version" content="" />
@@ -136,7 +136,7 @@
     
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="ml_blog.html">
-    ML Blog
+    Blog
   </a>
 </li>
 
@@ -215,7 +215,7 @@
     
 <li class="nav-item current active">
   <a class="nav-link nav-internal" href="ml_blog.html">
-    ML Blog
+    Blog
   </a>
 </li>
 
@@ -277,9 +277,9 @@
       </a>
     </li>
     
-    <li class="breadcrumb-item"><a href="ml_blog.html" class="nav-link">ML Blog</a></li>
+    <li class="breadcrumb-item"><a href="ml_blog.html" class="nav-link">Blog</a></li>
     
-    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><span class="section-number">1. </span>A Deep Dive into ML Model Assumptions</span></li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis"><span class="section-number">2. </span>A Deep Dive into ML Model Assumptions</span></li>
   </ul>
 </nav>
 </div>
@@ -297,13 +297,13 @@
                 <article class="bd-article">
                   
   <section id="a-deep-dive-into-ml-model-assumptions">
-<span id="assumptions-in-machine-learning"></span><h1><span class="section-number">1. </span>A Deep Dive into ML Model Assumptions<a class="headerlink" href="#a-deep-dive-into-ml-model-assumptions" title="Link to this heading">#</a></h1>
+<span id="assumptions-in-machine-learning"></span><h1><span class="section-number">2. </span>A Deep Dive into ML Model Assumptions<a class="headerlink" href="#a-deep-dive-into-ml-model-assumptions" title="Link to this heading">#</a></h1>
 <p>Understanding the assumptions behind machine learning models is a critical skill for any data scientist. These assumptions, are the underlying principles that guide how a model learns from data. When these assumptions align with the structure of your data, a model can perform brilliantly. When they are violated, the model’s results can be misleading or outright incorrect.</p>
 <p>This guide explores the core assumptions of several major classes of machine learning models, what happens when those assumptions break down, and how to address the issues.</p>
 <section id="assumptions-of-linear-models">
-<h2><span class="section-number">1.1. </span>Assumptions of Linear Models<a class="headerlink" href="#assumptions-of-linear-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.1. </span>Assumptions of Linear Models<a class="headerlink" href="#assumptions-of-linear-models" title="Link to this heading">#</a></h2>
 <section id="the-gauss-markov-assumptions-normality">
-<h3><span class="section-number">1.1.1. </span>The Gauss-Markov Assumptions &amp; Normality<a class="headerlink" href="#the-gauss-markov-assumptions-normality" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">2.1.1. </span>The Gauss-Markov Assumptions &amp; Normality<a class="headerlink" href="#the-gauss-markov-assumptions-normality" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>For an Ordinary Least Squares (OLS) regression model to be the Best Linear Unbiased Estimator (BLUE), it must meet a set of conditions known as the Gauss-Markov assumptions. A further assumption, normality of errors, is needed for valid statistical inference.</p>
 <ul class="simple">
@@ -331,9 +331,9 @@
 </section>
 </section>
 <section id="assumptions-of-tree-based-models">
-<h2><span class="section-number">1.2. </span>Assumptions of Tree-Based Models<a class="headerlink" href="#assumptions-of-tree-based-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.2. </span>Assumptions of Tree-Based Models<a class="headerlink" href="#assumptions-of-tree-based-models" title="Link to this heading">#</a></h2>
 <section id="implicit-assumptions-of-trees-non-parametric-models">
-<h3><span class="section-number">1.2.1. </span>Implicit Assumptions of Trees (Non-Parametric Models)<a class="headerlink" href="#implicit-assumptions-of-trees-non-parametric-models" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">2.2.1. </span>Implicit Assumptions of Trees (Non-Parametric Models)<a class="headerlink" href="#implicit-assumptions-of-trees-non-parametric-models" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>Tree-based models like Decision Trees, Random Forests, and Gradient Boosted Trees are non-parametric. This means they do not make strong assumptions about the functional form of the relationship between features and the target (e.g., they don’t assume linearity). This flexibility is a major advantage. However, they are not assumption-free; their assumptions are implicit in their structure and are better described as <strong>inductive biases</strong>.</p>
 <ul class="simple">
@@ -357,9 +357,9 @@
 </section>
 </section>
 <section id="assumptions-of-time-series-models">
-<h2><span class="section-number">1.3. </span>Assumptions of Time Series Models<a class="headerlink" href="#assumptions-of-time-series-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.3. </span>Assumptions of Time Series Models<a class="headerlink" href="#assumptions-of-time-series-models" title="Link to this heading">#</a></h2>
 <section id="the-assumption-of-stationarity">
-<h3><span class="section-number">1.3.1. </span>The Assumption of Stationarity<a class="headerlink" href="#the-assumption-of-stationarity" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">2.3.1. </span>The Assumption of Stationarity<a class="headerlink" href="#the-assumption-of-stationarity" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>Many classical time series models, like ARIMA, operate under the assumption that the underlying time series is <strong>stationary</strong>. A stationary series is one whose statistical properties do not change over time. More formally:</p>
 <ul class="simple">
@@ -393,9 +393,9 @@
 </section>
 </section>
 <section id="assumptions-of-instance-based-models">
-<h2><span class="section-number">1.4. </span>Assumptions of Instance-Based Models<a class="headerlink" href="#assumptions-of-instance-based-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.4. </span>Assumptions of Instance-Based Models<a class="headerlink" href="#assumptions-of-instance-based-models" title="Link to this heading">#</a></h2>
 <section id="k-nearest-neighbors-knn">
-<h3><span class="section-number">1.4.1. </span>K-Nearest Neighbors (KNN)<a class="headerlink" href="#k-nearest-neighbors-knn" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">2.4.1. </span>K-Nearest Neighbors (KNN)<a class="headerlink" href="#k-nearest-neighbors-knn" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>K-Nearest Neighbors (KNN) is a simple, non-parametric algorithm used for classification and regression. It makes predictions for a new data point based on the majority class (for classification) or average value (for regression) of its ‘k’ nearest neighbors in the feature space. Its core assumptions are implicit in the distance calculation.</p>
 <ul class="simple">
@@ -419,9 +419,9 @@
 </section>
 </section>
 <section id="assumptions-of-probabilistic-models">
-<h2><span class="section-number">1.5. </span>Assumptions of Probabilistic Models<a class="headerlink" href="#assumptions-of-probabilistic-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.5. </span>Assumptions of Probabilistic Models<a class="headerlink" href="#assumptions-of-probabilistic-models" title="Link to this heading">#</a></h2>
 <section id="the-naive-conditional-independence-assumption">
-<h3><span class="section-number">1.5.1. </span>The ‘Naive’ Conditional Independence Assumption<a class="headerlink" href="#the-naive-conditional-independence-assumption" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">2.5.1. </span>The ‘Naive’ Conditional Independence Assumption<a class="headerlink" href="#the-naive-conditional-independence-assumption" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>This is the core assumption of the <strong>Naive Bayes</strong> family of classifiers. The model is ‘naive’ because it assumes that all features are <strong>conditionally independent</strong> of each other, given the class label. For example, in a spam classifier, it assumes that the presence of the word “viagra” is independent of the presence of the word “free”, given that the email is spam. Mathematically, for features <span class="math notranslate nohighlight">\(X_1, ..., X_n\)</span> and class <span class="math notranslate nohighlight">\(Y\)</span>, it assumes <span class="math notranslate nohighlight">\(P(X_i | Y, X_j) = P(X_i | Y)\)</span> for all <span class="math notranslate nohighlight">\(i \neq j\)</span>.</p>
 <p><strong>The Problem: When It Breaks Down</strong></p>
@@ -435,9 +435,9 @@
 </section>
 </section>
 <section id="assumptions-of-support-vector-machines">
-<h2><span class="section-number">1.6. </span>Assumptions of Support Vector Machines<a class="headerlink" href="#assumptions-of-support-vector-machines" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.6. </span>Assumptions of Support Vector Machines<a class="headerlink" href="#assumptions-of-support-vector-machines" title="Link to this heading">#</a></h2>
 <section id="data-separability-the-kernel-trick">
-<h3><span class="section-number">1.6.1. </span>Data Separability &amp; The Kernel Trick<a class="headerlink" href="#data-separability-the-kernel-trick" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">2.6.1. </span>Data Separability &amp; The Kernel Trick<a class="headerlink" href="#data-separability-the-kernel-trick" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>Support Vector Machines (SVMs) are a powerful class of supervised learning models. Their core assumption, or inductive bias, changes depending on the kernel used.</p>
 <ul class="simple">
@@ -459,9 +459,9 @@
 </section>
 </section>
 <section id="assumptions-of-deep-learning-models">
-<h2><span class="section-number">1.7. </span>Assumptions of Deep Learning Models<a class="headerlink" href="#assumptions-of-deep-learning-models" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.7. </span>Assumptions of Deep Learning Models<a class="headerlink" href="#assumptions-of-deep-learning-models" title="Link to this heading">#</a></h2>
 <section id="general-neural-networks-compositionality">
-<h3><span class="section-number">1.7.1. </span>General Neural Networks (Compositionality)<a class="headerlink" href="#general-neural-networks-compositionality" title="Link to this heading">#</a></h3>
+<h3><span class="section-number">2.7.1. </span>General Neural Networks (Compositionality)<a class="headerlink" href="#general-neural-networks-compositionality" title="Link to this heading">#</a></h3>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>The most fundamental inductive bias of a standard feed-forward neural network is the assumption of <strong>compositionality</strong> or <strong>hierarchical structure</strong> in the data. The layered architecture is designed to learn features in a hierarchical fashion: the first layer learns simple patterns, the second layer combines these to learn more complex patterns, and so on.</p>
 <p><strong>The Problem: When It Breaks Down</strong></p>
@@ -476,7 +476,7 @@
 </section>
 </section>
 <section id="convolutional-neural-networks-cnns">
-<h2><span class="section-number">1.8. </span>Convolutional Neural Networks (CNNs)<a class="headerlink" href="#convolutional-neural-networks-cnns" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.8. </span>Convolutional Neural Networks (CNNs)<a class="headerlink" href="#convolutional-neural-networks-cnns" title="Link to this heading">#</a></h2>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>CNNs are built on two powerful inductive biases for grid-like data:</p>
 <ul class="simple">
@@ -496,7 +496,7 @@
 </ul>
 </section>
 <section id="recurrent-neural-networks-rnns">
-<h2><span class="section-number">1.9. </span>Recurrent Neural Networks (RNNs)<a class="headerlink" href="#recurrent-neural-networks-rnns" title="Link to this heading">#</a></h2>
+<h2><span class="section-number">2.9. </span>Recurrent Neural Networks (RNNs)<a class="headerlink" href="#recurrent-neural-networks-rnns" title="Link to this heading">#</a></h2>
 <p><strong>Concept Definition &amp; Importance</strong></p>
 <p>RNNs are designed for sequential data. Their core inductive bias is <strong>sequential dependence</strong> and <strong>time invariance</strong>.</p>
 <ul class="simple">
@@ -527,12 +527,12 @@
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="ml_blog.html"
+       href="climbing_the_ladder.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">ML Blog</p>
+        <p class="prev-next-title"><span class="section-number">1. </span>Climbing the Ladder of Abstraction: My Computationally Irreducible Journey</p>
       </div>
     </a>
     <a class="right-next"
@@ -540,7 +540,7 @@
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title"><span class="section-number">2. </span>Inductive Biases of ML Models</p>
+        <p class="prev-next-title"><span class="section-number">3. </span>Inductive Biases of ML Models</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -563,36 +563,36 @@
   </div>
   <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-linear-models">1.1. Assumptions of Linear Models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gauss-markov-assumptions-normality">1.1.1. The Gauss-Markov Assumptions &amp; Normality</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-linear-models">2.1. Assumptions of Linear Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-gauss-markov-assumptions-normality">2.1.1. The Gauss-Markov Assumptions &amp; Normality</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-tree-based-models">1.2. Assumptions of Tree-Based Models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implicit-assumptions-of-trees-non-parametric-models">1.2.1. Implicit Assumptions of Trees (Non-Parametric Models)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-tree-based-models">2.2. Assumptions of Tree-Based Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#implicit-assumptions-of-trees-non-parametric-models">2.2.1. Implicit Assumptions of Trees (Non-Parametric Models)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-time-series-models">1.3. Assumptions of Time Series Models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-assumption-of-stationarity">1.3.1. The Assumption of Stationarity</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-time-series-models">2.3. Assumptions of Time Series Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-assumption-of-stationarity">2.3.1. The Assumption of Stationarity</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-instance-based-models">1.4. Assumptions of Instance-Based Models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-knn">1.4.1. K-Nearest Neighbors (KNN)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-instance-based-models">2.4. Assumptions of Instance-Based Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors-knn">2.4.1. K-Nearest Neighbors (KNN)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-probabilistic-models">1.5. Assumptions of Probabilistic Models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-conditional-independence-assumption">1.5.1. The ‘Naive’ Conditional Independence Assumption</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-probabilistic-models">2.5. Assumptions of Probabilistic Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#the-naive-conditional-independence-assumption">2.5.1. The ‘Naive’ Conditional Independence Assumption</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-support-vector-machines">1.6. Assumptions of Support Vector Machines</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-separability-the-kernel-trick">1.6.1. Data Separability &amp; The Kernel Trick</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-support-vector-machines">2.6. Assumptions of Support Vector Machines</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#data-separability-the-kernel-trick">2.6.1. Data Separability &amp; The Kernel Trick</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-deep-learning-models">1.7. Assumptions of Deep Learning Models</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-neural-networks-compositionality">1.7.1. General Neural Networks (Compositionality)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#assumptions-of-deep-learning-models">2.7. Assumptions of Deep Learning Models</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#general-neural-networks-compositionality">2.7.1. General Neural Networks (Compositionality)</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">1.8. Convolutional Neural Networks (CNNs)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-rnns">1.9. Recurrent Neural Networks (RNNs)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#convolutional-neural-networks-cnns">2.8. Convolutional Neural Networks (CNNs)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#recurrent-neural-networks-rnns">2.9. Recurrent Neural Networks (RNNs)</a></li>
 </ul>
   </nav></div>
 
