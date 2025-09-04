@@ -11,11 +11,7 @@ Hi 👋, I'm Abhijeet Pendyala
 
 I am a **PhD researcher and full-stack ML software developer** with 7+ years of experience in **Industrial AI**, **Computer Vision**, and **platform development**. My expertise lies in designing and deploying scalable, production-grade ML systems that solve complex, real-world problems. My experience goes beyond using off-the-shelf libraries; I excel at taking raw, messy data from industrial systems and transforming it into actionable insights. I design and develop novel algorithms to overcome the limitations of standard approaches and build reusable, modular ML platforms with comprehensive testing protocols and modern MLOps practices for seamless deployment.
 
-.. note::
-   
-   **My Journey Through the Four Paradigms of Science**: From theoretical foundations to data-driven AI, discover how my path mirrors the evolution of scientific discovery itself. Read my complete story: :ref:`climbing_the_ladder`
-
-------------------
+----------------
 **Core Expertise**
 =================
 
