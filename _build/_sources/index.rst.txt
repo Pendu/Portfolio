@@ -91,6 +91,7 @@ My path through the world of science and AI has been computationally irreducible
 ===============
 
 * Download my CV in PDF format: `Abhijeet Pendyala - CV.pdf <https://github.com/Pendu/Portfolio/blob/ffd4d6ba7c4deb5fba0042252d4308f26b25a2c5/source/CV_aug_2025.pdf>`_
+* Download my PhD thesis: `PhD Thesis - Abhijeet Pendyala.pdf <Phd_thesis_Abhijeet_Pendyala.pdf>`_
 * Read my blog: `ML Blog <ml_blog/ml_blog.html>`_
 
 
