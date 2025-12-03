@@ -1,12 +1,24 @@
-# Minimal makefile for Sphinx documentation
+# ==============================================================================
+# Makefile for Sphinx Documentation Build
+# ==============================================================================
+# This Makefile provides convenient commands for building Sphinx documentation.
 #
+# Usage:
+#   make html      - Build HTML documentation
+#   make clean     - Remove all build artifacts
+#   make help      - Show all available targets
+#
+# The CI/CD pipeline uses sphinx-build directly, but this Makefile is useful
+# for local development and testing.
+# ==============================================================================
 
 # You can set these variables from the command line, and also
 # from the environment for the first two.
 SPHINXOPTS    ?=
 SPHINXBUILD   ?= sphinx-build
 SOURCEDIR     = source
-BUILDDIR      = build
+# Build directory - use _build for consistency with CI/CD pipeline
+BUILDDIR      = _build
 
 # Put it first so that "make" without argument is like "make help".
 help:

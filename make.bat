@@ -1,4 +1,18 @@
 @ECHO OFF
+REM ==============================================================================
+REM Windows Batch Script for Sphinx Documentation Build
+REM ==============================================================================
+REM This script provides convenient commands for building Sphinx documentation
+REM on Windows systems.
+REM
+REM Usage:
+REM   make html      - Build HTML documentation
+REM   make clean     - Remove all build artifacts
+REM   make help      - Show all available targets
+REM
+REM The CI/CD pipeline uses sphinx-build directly, but this script is useful
+REM for local development and testing on Windows.
+REM ==============================================================================
 
 pushd %~dp0
 
@@ -8,7 +22,8 @@ if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
 set SOURCEDIR=source
-set BUILDDIR=build
+REM Build directory - use _build for consistency with CI/CD pipeline
+set BUILDDIR=_build
 
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (

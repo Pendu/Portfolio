@@ -1,0 +1,134 @@
+# ==============================================================================
+# GitHub Actions Workflow: Build and Deploy Sphinx Documentation
+# ==============================================================================
+# This workflow automatically builds the Sphinx documentation and deploys it
+# to GitHub Pages whenever changes are pushed to the main branch.
+#
+# Workflow Overview:
+#   1. Triggers on push to main branch (or manual dispatch)
+#   2. Sets up Python environment with required dependencies
+#   3. Builds Sphinx HTML documentation
+#   4. Deploys the built HTML to GitHub Pages
+#
+# Prerequisites:
+#   - Enable GitHub Pages in repository settings
+#   - Set source to "GitHub Actions"
+#   - Ensure the repository has Actions enabled
+# ==============================================================================
+
+name: Deploy Sphinx Documentation to GitHub Pages
+
+# ------------------------------------------------------------------------------
+# Trigger Configuration
+# ------------------------------------------------------------------------------
+on:
+  # Trigger on push to the main branch
+  push:
+    branches:
+      - main
+    # Only trigger when documentation-related files change
+    paths:
+      - 'source/**'           # Source documentation files (.rst, .md, images, etc.)
+      - 'requirements.txt'    # Python dependencies
+      - 'conf.py'             # Sphinx configuration (if at root)
+      - '.github/workflows/deploy-docs.yml'  # This workflow file
+
+  # Allow manual trigger from the Actions tab in GitHub
+  workflow_dispatch:
+
+# ------------------------------------------------------------------------------
+# Permissions Configuration
+# ------------------------------------------------------------------------------
+# Required permissions for GitHub Pages deployment
+permissions:
+  contents: read       # Read repository contents
+  pages: write         # Write to GitHub Pages
+  id-token: write      # Required for Pages deployment authentication
+
+# ------------------------------------------------------------------------------
+# Concurrency Configuration
+# ------------------------------------------------------------------------------
+# Ensure only one deployment runs at a time to prevent conflicts
+concurrency:
+  group: "pages"
+  cancel-in-progress: false  # Don't cancel in-progress deployments
+
+# ==============================================================================
+# Jobs Definition
+# ==============================================================================
+jobs:
+  # ----------------------------------------------------------------------------
+  # Job: Build the Sphinx Documentation
+  # ----------------------------------------------------------------------------
+  build:
+    name: Build Documentation
+    runs-on: ubuntu-latest
+    
+    steps:
+      # Step 1: Check out the repository code
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch full history for potential git-based features (e.g., last modified dates)
+          fetch-depth: 0
+
+      # Step 2: Set up Python environment
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          # Cache pip dependencies for faster subsequent builds
+          cache: 'pip'
+
+      # Step 3: Install Python dependencies from requirements.txt
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      # Step 4: Build the Sphinx documentation
+      # Uses sphinx-build directly for more control over the build process
+      - name: Build Sphinx Documentation
+        run: |
+          # Build HTML documentation
+          # -b html: Build HTML output
+          # -d _build/doctrees: Directory for cached doctrees (speeds up rebuilds)
+          # -W: Turn warnings into errors (ensures clean builds)
+          # --keep-going: Continue building even if there are warnings/errors
+          # source: Source directory containing .rst files
+          # _build/html: Output directory for HTML files
+          sphinx-build -b html -d _build/doctrees source _build/html
+
+      # Step 5: Upload the built documentation as an artifact for the deploy job
+      - name: Upload Documentation Artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          # Path to the directory containing the built HTML files
+          path: '_build/html'
+
+  # ----------------------------------------------------------------------------
+  # Job: Deploy to GitHub Pages
+  # ----------------------------------------------------------------------------
+  deploy:
+    name: Deploy to GitHub Pages
+    
+    # Only run after the build job completes successfully
+    needs: build
+    
+    runs-on: ubuntu-latest
+    
+    # Specify the deployment environment (shows in GitHub UI)
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    
+    steps:
+      # Step 1: Configure GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      # Step 2: Deploy the artifact to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+

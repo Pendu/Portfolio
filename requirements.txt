@@ -1,0 +1,25 @@
+# ==============================================================================
+# Sphinx Documentation Build Requirements
+# ==============================================================================
+# This file lists all Python dependencies required to build the Sphinx 
+# documentation for the personal portfolio website.
+#
+# Usage:
+#   pip install -r requirements.txt
+#
+# These dependencies are also used by the GitHub Actions CI/CD pipeline
+# to automatically build and deploy the documentation.
+# ==============================================================================
+
+# Core Sphinx documentation generator
+# https://www.sphinx-doc.org/
+sphinx>=7.0.0
+
+# PyData Sphinx Theme - Modern, responsive theme for Sphinx
+# https://pydata-sphinx-theme.readthedocs.io/
+pydata-sphinx-theme>=0.14.0
+
+# BibTeX extension for Sphinx - enables bibliography/citation support
+# https://sphinxcontrib-bibtex.readthedocs.io/
+sphinxcontrib-bibtex>=2.6.0
+
