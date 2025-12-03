@@ -132,6 +132,16 @@ Layer 2: Backend — The API Gateway & Orchestration Layer
 
 The backend layer, implemented in **Python with FastAPI**, serves as the system's nerve center, handling all request routing, authentication, and pipeline orchestration.
 
+.. figure:: ecoki_architecture_files/uml_diagrams/backend.png
+   :alt: Backend Layer UML Class Diagram - RestAPIShell and Router composition
+   :align: center
+   :width: 100%
+   :figclass: align-center
+
+   **Backend Layer Class Diagram**: The ``RestAPIShell`` serves as the main entry point, composing four specialized routers: ``PipelineManagerRouter`` for pipeline CRUD operations, ``PipelineRouter`` for execution control, ``BuildingBlockRouter`` for block metadata, and ``StaticResourcesRouter`` for static content delivery.
+
+The UML diagram above reveals the core design pattern: **composition over inheritance**. The ``RestAPIShell`` aggregates multiple specialized routers, each responsible for a distinct API domain. This allows independent development and testing of each router while maintaining a unified API surface.
+
 **FastAPI REST Interface**
 
 .. code-block:: python
@@ -182,52 +192,88 @@ The API layer acts as a **Gatekeeper**, performing:
 
 **Pipeline Manager: The Orchestration Core**
 
-The ``PipelineThreadManager`` is the heart of the backend, responsible for:
+The ``PipelineManager`` sits at the top of the orchestration hierarchy, managing pipeline lifecycles and delegating execution to ``PipelineThreadManager``:
 
 .. code-block:: python
 
-    class PipelineThreadManager:
+    class PipelineManager:
         """
-        Orchestrates pipeline execution with configurable concurrency.
+        Top-level manager for all pipeline operations.
         
-        Responsibilities:
-        - Parse pipeline DAG and determine execution order
-        - Manage thread pool for parallel block execution
-        - Handle inter-block data transfer
-        - Coordinate with Execution Engine via message passing
+        Attributes:
+            pipelines: Dictionary of active pipeline instances
+            port_generator: Allocates unique ports for inter-block communication
+            pipeline_thread_manager: Handles concurrent pipeline execution
         """
         
-        def __init__(self, max_workers: int = 4):
-            # Thread pool for concurrent block execution
-            self.executor = ThreadPoolExecutor(max_workers=max_workers)
-            
-            # Pipeline execution state (externalized)
-            self.execution_states: dict[str, PipelineState] = {}
+        def __init__(self, host: str, port: int):
+            self.pipelines: dict[str, Pipeline] = {}
+            self.port_generator = PortGenerator()
+            self.host = host
+            self.port = port
+            self.pipeline_thread_manager = PipelineThreadManager()
         
-        def schedule_pipeline(self, config: PipelineConfig) -> str:
-            """
-            Schedule a pipeline for execution.
-            
-            Algorithm:
-            1. Topological sort of DAG to determine execution order
-            2. Identify parallelizable blocks (no dependencies)
-            3. Submit to thread pool with dependency callbacks
-            
-            Returns: execution_id for status tracking
-            """
-            # Topological sort for execution ordering
-            execution_order = self._topological_sort(config)
-            
-            # Submit blocks respecting dependencies
+        def get_pipeline(self, pipeline_name: str) -> Pipeline:
+            """Retrieve a pipeline by name."""
+            return self.pipelines.get(pipeline_name)
+        
+        def get_pipeline_executor(self, pipeline_name: str) -> PipelineExecutor:
+            """Get the executor associated with a pipeline."""
             ...
         
-        def _topological_sort(self, config: PipelineConfig) -> list[str]:
+        def add_pipeline(
+            self, 
+            pipeline_name: str, 
+            execution_mode: str,
+            topology_provider: TopologyProvider,
+            meta_data: dict
+        ) -> bool:
             """
-            Kahn's algorithm for DAG linearization.
+            Register a new pipeline with the manager.
             
-            Ensures blocks execute only after their dependencies complete.
+            Args:
+                pipeline_name: Unique identifier for the pipeline
+                execution_mode: 'local' or 'loop' for streaming scenarios
+                topology_provider: Strategy for loading pipeline definition
+                meta_data: Additional pipeline metadata
             """
-            # Implementation of topological sort
+            ...
+
+
+    class PipelineThreadManager(ThreadsManager):
+        """
+        Manages concurrent pipeline execution threads.
+        
+        Extends the abstract ThreadsManager to provide pipeline-specific
+        thread lifecycle management.
+        """
+        
+        def add_thread(
+            self, 
+            thread_name: str, 
+            element_executor: PipelineExecutor
+        ) -> None:
+            """Register a new pipeline execution thread."""
+            ...
+        
+        def run_thread(
+            self, 
+            thread_name: str, 
+            inputs: dict
+        ) -> None:
+            """Start execution of a registered pipeline thread."""
+            ...
+        
+        def remove_thread(self, thread_name: str) -> bool:
+            """Stop and remove a pipeline thread."""
+            ...
+        
+        def restart_thread(
+            self, 
+            thread_name: str, 
+            execute_element: PipelineExecutor
+        ) -> None:
+            """Restart a pipeline thread with a new executor."""
             ...
 
 **OpenAPI/Swagger Documentation**
@@ -242,6 +288,20 @@ Layer 3: Execution Engine — The Computational Core
 ==================================================
 
 The Execution Engine is where the actual ML computation happens. It's designed around two key abstractions: **Pipelines** and **Executors**.
+
+.. figure:: ecoki_architecture_files/uml_diagrams/pipeline.png
+   :alt: Pipeline and Executor UML Class Diagram - Complete execution engine architecture
+   :align: center
+   :width: 100%
+   :figclass: align-center
+
+   **Pipeline & Executor Class Hierarchy**: This comprehensive diagram shows the relationships between ``PipelineManager``, ``PipelineThreadManager``, ``PipelineExecutor`` (with ``LocalPipelineExecutor`` and ``LoopPipelineExecutor`` implementations), ``Pipeline``, ``Connection``, and the ``TopologyProvider`` pattern for loading pipeline definitions from various sources.
+
+The class diagram reveals several sophisticated design patterns working in concert:
+
+- **Strategy Pattern**: ``TopologyProvider`` abstracts how pipeline topologies are loaded (JSON file, dict, etc.)
+- **Template Method**: ``PipelineExecutor`` defines the execution skeleton, with concrete implementations providing specific behaviors
+- **Thread Management**: ``PipelineThreadManager`` orchestrates ``PipelineThread`` instances for concurrent execution
 
 **Pipeline as a Directed Acyclic Graph (DAG)**
 
@@ -265,128 +325,132 @@ A Pipeline is a sequence of connected Building Blocks forming a DAG:
 - **Single Source/Sink**: Clear entry and exit points
 - **Type Compatibility**: Output ports must match input port types
 
-**The Executor Pattern**
+**Connection: The DAG Edges**
 
-Executors provide a clean separation between computation logic and lifecycle management:
+Connections represent the data flow between Building Blocks:
 
 .. code-block:: python
 
-    from abc import ABC, abstractmethod
-    from typing import Generic, TypeVar
-    
-    T = TypeVar('T', bound='BuildingBlock')
-    
-    class Executor(ABC, Generic[T]):
+    @dataclass
+    class Connection:
         """
-        Abstract base class for all executors.
+        Represents a directed edge in the pipeline DAG.
         
-        Executors manage the lifecycle of Building Block execution,
-        handling resource allocation, error recovery, and telemetry.
+        Connects an outlet port of one block to an inlet port of another,
+        defining how data flows through the pipeline.
         """
+        name: str  # Unique identifier for this connection
+        from_node: str  # Source block ID
+        from_port: str  # Source outlet port name
+        to_node: str  # Destination block ID
+        to_port: str  # Destination inlet port name
+        
+        def get_info_obj(self) -> 'ConnectionInformation':
+            """Return serializable connection metadata for the UI."""
+            ...
+
+
+    class Pipeline:
+        """
+        A directed acyclic graph of Building Blocks.
+        
+        Manages nodes (blocks), connections (edges), and topology validation.
+        """
+        
+        def create_pipeline(self) -> None:
+            """Initialize an empty pipeline."""
+            ...
+        
+        def attach_topology_provider(
+            self, 
+            topology_provider: 'TopologyProvider'
+        ) -> None:
+            """Load pipeline structure from a topology provider."""
+            ...
+        
+        def node_exists(self, node_name: str) -> bool:
+            """Check if a block exists in the pipeline."""
+            ...
+        
+        def add_node(self, node: 'BuildingBlock') -> bool:
+            """Add a Building Block to the pipeline."""
+            ...
+        
+        def delete_node(self, node_name: str) -> bool:
+            """Remove a block and its connections."""
+            ...
+        
+        def add_connection(self, connection: Connection) -> bool:
+            """
+            Add an edge between two blocks.
+            
+            Validates:
+            - Both nodes exist
+            - Ports exist on respective blocks
+            - Port types are compatible
+            - No cycles would be created
+            """
+            ...
+        
+        def get_incoming_connection_by_node(
+            self, 
+            node: str
+        ) -> list[Connection]:
+            """Get all connections feeding into a block."""
+            ...
+
+**TopologyProvider: Loading Pipeline Definitions**
+
+The ``TopologyProvider`` pattern abstracts how pipeline structures are loaded:
+
+.. code-block:: python
+
+    class TopologyProvider(ABC):
+        """
+        Strategy interface for loading pipeline topologies.
+        
+        Different providers support different source formats,
+        enabling flexibility in how pipelines are defined.
+        """
+        topology: dict
         
         @abstractmethod
-        def execute(self, block: T, inputs: dict) -> dict:
-            """
-            Execute a building block with given inputs.
-            
-            Args:
-                block: The Building Block instance to execute
-                inputs: Dictionary mapping port names to input data
-                
-            Returns:
-                Dictionary mapping output port names to result data
-            """
-            pass
-        
-        @abstractmethod
-        def validate(self, block: T, inputs: dict) -> bool:
-            """
-            Validate inputs before execution.
-            
-            Performs type checking and constraint validation.
-            """
+        def provide(self) -> dict:
+            """Load and return the pipeline topology."""
             pass
 
 
-    class PipelineExecutor(Executor):
-        """
-        Executor for entire pipelines.
+    class TopologyProviderFromJSONFile(TopologyProvider):
+        """Load pipeline from a JSON file on disk."""
         
-        Handles DAG traversal, parallel execution scheduling,
-        and cross-block data transfer.
-        """
+        def __init__(self, path_to_file: str):
+            self.path_to_file = path_to_file
         
-        def execute(self, pipeline: Pipeline, inputs: dict) -> dict:
-            """
-            Execute a complete pipeline.
-            
-            Algorithm:
-            1. Initialize execution context
-            2. Execute blocks in topological order
-            3. Manage intermediate results
-            4. Return final outputs
-            """
-            # Create execution context for this run
-            context = ExecutionContext(pipeline.id)
-            
-            # Execute each block in order
-            for block_id in self._execution_order(pipeline):
-                block = pipeline.blocks[block_id]
-                block_inputs = self._resolve_inputs(block, context)
-                
-                # Delegate to BuildingBlockExecutor
-                executor = BuildingBlockExecutor()
-                result = executor.execute(block, block_inputs)
-                
-                # Store results in context for downstream blocks
-                context.store_result(block_id, result)
-            
-            return context.get_final_outputs()
+        def read_from_file(self) -> None:
+            """Read JSON from the file system."""
+            ...
+        
+        def provide(self) -> dict:
+            """Return the parsed topology."""
+            self.read_from_file()
+            return self.topology
 
 
-    class BuildingBlockExecutor(Executor):
-        """
-        Executor for individual Building Blocks.
+    class TopologyProviderFromDict(TopologyProvider):
+        """Load pipeline from an in-memory dictionary."""
         
-        Provides isolation, error handling, and resource management
-        for single block execution.
-        """
+        def __init__(self, topology: dict):
+            self.topology = topology
         
-        def execute(self, block: BuildingBlock, inputs: dict) -> dict:
-            """
-            Execute a single Building Block.
-            
-            Wraps the block's run() method with:
-            - Input validation
-            - Exception handling
-            - Performance telemetry
-            - Resource cleanup
-            """
-            # Validate inputs match expected schema
-            if not self.validate(block, inputs):
-                raise ValidationError(f"Invalid inputs for {block.name}")
-            
-            try:
-                # Record execution start time
-                start_time = time.perf_counter()
-                
-                # Execute the stateless block
-                result = block.run(**inputs)
-                
-                # Record telemetry
-                duration = time.perf_counter() - start_time
-                self._record_metrics(block, duration)
-                
-                return result
-                
-            except Exception as e:
-                # Log error with full context
-                self._log_error(block, inputs, e)
-                raise ExecutionError(f"Block {block.name} failed: {e}")
+        def provide(self) -> dict:
+            """Return the dictionary directly."""
+            return self.topology
 
-**Building Block: The Atomic Unit**
+This pattern enables pipelines to be loaded from various sources: JSON files stored in the Resource Pool, configurations sent via API, or programmatically constructed in code.
 
-Building Blocks are the fundamental computational units:
+**The Executor Pattern**
+
+Executors provide a clean separation between computation logic and lifecycle management. The architecture employs a two-level executor hierarchy:
 
 .. code-block:: python
 
@@ -394,17 +458,231 @@ Building Blocks are the fundamental computational units:
     from dataclasses import dataclass
     from typing import Any
     
+    
     @dataclass
-    class Port:
+    class PipelineExecutorDataStructure:
         """
-        Defines an input or output port for a Building Block.
+        Holds execution state for a pipeline run.
         
-        Ports enable type-safe connections between blocks.
+        Separates mutable execution state from the executor logic,
+        enabling state persistence and recovery.
+        """
+        pipeline: 'PipelineDataStructure'
+        pipeline_execution: dict[str, 'BuildingBlockExecutorDataStructure']
+        execution_sequence: list['BuildingBlockDataStructure']
+        execution_status: int
+        execution_mode: str
+        host: str
+        port_generator: 'PortNumberCounter'
+        logger: 'LocalLogHandler'
+    
+    
+    class PipelineExecutor(ABC):
+        """
+        Abstract base class for pipeline execution strategies.
+        
+        Defines the template for pipeline execution while allowing
+        concrete implementations to vary execution behavior.
+        """
+        
+        @abstractmethod
+        def update_executors(self) -> None:
+            """Refresh executor state before a run."""
+            pass
+        
+        @abstractmethod
+        def run_executors(self) -> None:
+            """Execute all building blocks in sequence."""
+            pass
+        
+        @abstractmethod
+        def run(self) -> None:
+            """Main execution entry point."""
+            pass
+        
+        @abstractmethod
+        def terminate(self) -> None:
+            """Gracefully stop execution."""
+            pass
+        
+        def _find_execution_order(self) -> list[str]:
+            """
+            Topological sort of the pipeline DAG.
+            
+            Returns block IDs in valid execution order.
+            """
+            ...
+        
+        def _handle_bb_threads(self) -> None:
+            """Manage building block execution threads."""
+            ...
+
+
+    class LocalPipelineExecutor(PipelineExecutor):
+        """
+        Executes pipelines in a single-shot, batch mode.
+        
+        Use case: Training pipelines, batch inference, data preprocessing.
+        Runs the pipeline once from start to finish.
+        """
+        
+        def run(self) -> None:
+            """Execute the pipeline once."""
+            self.update_executors()
+            self.run_executors()
+        
+        def run_with_args(
+            self, 
+            run_args: dict, 
+            pipeline_manager: 'PipelineManager'
+        ) -> None:
+            """Execute with runtime arguments."""
+            ...
+        
+        def create_interactive_gui(self) -> None:
+            """Launch interactive visualization during execution."""
+            ...
+
+
+    class LoopPipelineExecutor(PipelineExecutor):
+        """
+        Executes pipelines in continuous streaming mode.
+        
+        Use case: Real-time monitoring, live sensor data processing,
+        continuous prediction streams.
+        
+        The pipeline runs in a loop until explicitly stopped,
+        processing new data as it arrives.
+        """
+        
+        def __init__(self):
+            self.loop_signal: bool = True  # Control flag for loop termination
+        
+        def run(self) -> None:
+            """Execute the pipeline in a continuous loop."""
+            while self.loop_signal:
+                self.update_executors()
+                self.run_executors()
+                self.run_routine()  # Wait for new data or sleep interval
+        
+        def terminate(self) -> None:
+            """Signal the loop to stop after current iteration."""
+            self.loop_signal = False
+
+**Building Block: The Atomic Unit**
+
+.. figure:: ecoki_architecture_files/uml_diagrams/building_block.png
+   :alt: Building Block UML Class Diagram - Port system, block structure, and executor pattern
+   :align: center
+   :width: 100%
+   :figclass: align-center
+
+   **Building Block Class Architecture**: The diagram illustrates the complete Building Block ecosystem: the ``Port`` system (``BuildingBlockPort``, ``BuildingBlockPortInlet``, ``BuildingBlockPortOutlet``), the core ``BuildingBlock`` abstraction with its data structures, the ``BuildingBlockExecutor`` for lifecycle management, and supporting classes like ``Visualizer`` and ``AbstractInteractiveGUI`` for interactive execution modes.
+
+This class diagram reveals the depth of the Building Block abstraction:
+
+- **Port System**: Type-safe inlet/outlet ports with ``PortInformation`` metadata enable compile-time validation of block connections
+- **Separation of Data and Behavior**: ``BuildingBlockDataStructure`` holds serializable metadata, while ``BuildingBlock`` contains the execution logic
+- **Executor Isolation**: ``BuildingBlockExecutor`` wraps execution with telemetry, error handling, and resource management
+- **Interactive Mode**: ``AbstractInteractiveGUI`` and ``Visualizer`` support real-time visualization during development
+
+Building Blocks are the fundamental computational units. The architecture carefully separates **metadata** (``BuildingBlockDataStructure``) from **behavior** (``BuildingBlock``):
+
+.. code-block:: python
+
+    from abc import ABC, abstractmethod
+    from pydantic import BaseModel
+    from typing import Any
+    
+    
+    class PortInformation(BaseModel):
+        """
+        Metadata describing a port's contract.
+        
+        Used by the UI to render port connectors and validate connections.
         """
         name: str
-        dtype: type
+        category: str  # e.g., 'data', 'model', 'config'
+        data_type: str  # String representation for serialization
+        allowed_data_types: list[str]  # Compatible types for connections
+    
+    
+    class BuildingBlockDataStructure(BaseModel):
+        """
+        Serializable metadata for a Building Block.
+        
+        This structure is stored in the Resource Pool and used by the
+        frontend to render blocks in the Pipeline Configurator.
+        """
+        name: str | None
+        architecture: str  # e.g., 'preprocessing', 'model', 'visualization'
+        version: str
         description: str
-        required: bool = True
+        short_description: str
+        category: list[str]  # Tags for filtering in UI
+        
+        inputs_list: list[str]
+        outputs_list: list[str]
+        
+        inlet_ports: dict[str, 'BuildingBlockPortDataStructure']
+        outlet_ports: dict[str, 'BuildingBlockPortDataStructure']
+        
+        settings: dict  # Block-specific configuration schema
+        interactive_settings: bool  # Whether block supports interactive mode
+        pipeline_manager: object | None
+        logger: 'LocalLogHandler'
+    
+    
+    class BuildingBlockPort(ABC):
+        """
+        Abstract base class for typed ports.
+        
+        Ports are the connection points between blocks, enforcing
+        type compatibility at both design-time and runtime.
+        """
+        
+        @abstractmethod
+        def get_port_name(self) -> str:
+            """Return the port's identifier."""
+            pass
+        
+        @abstractmethod
+        def get_port_type(self) -> object:
+            """Return the expected data type."""
+            pass
+        
+        def set_port_value(self, value: Any) -> None:
+            """Set the port's current value."""
+            ...
+        
+        def get_info_obj(self) -> PortInformation:
+            """Return serializable port metadata."""
+            ...
+
+
+    class BuildingBlockPortInlet(BuildingBlockPort):
+        """Input port - receives data from upstream blocks."""
+        
+        def get_port_info(self) -> dict:
+            """Return inlet-specific metadata."""
+            ...
+
+
+    class BuildingBlockPortOutlet(BuildingBlockPort):
+        """
+        Output port - sends data to downstream blocks.
+        
+        Includes status tracking for execution monitoring.
+        """
+        status_code: int | None = None
+        
+        def set_status_code(self, status_code: int) -> None:
+            """Set execution status (0=success, non-zero=error)."""
+            ...
+        
+        def get_result(self) -> dict:
+            """Return the output value and status."""
+            ...
     
     
     class BuildingBlock(ABC):
@@ -412,110 +690,196 @@ Building Blocks are the fundamental computational units:
         Abstract base class for all Building Blocks.
         
         Key Design Principles:
-        - STATELESS: No internal state between run() calls
+        - STATELESS: No internal state between execute() calls
         - SINGLE RESPONSIBILITY: One well-defined operation
-        - TYPE-SAFE PORTS: Explicit input/output contracts
+        - TYPE-SAFE PORTS: Explicit input/output contracts via Ports
         
-        Example blocks:
-        - DataReader: Read from MongoDB, CSV, etc.
+        Example implementations:
+        - DataReader: Read from MongoDB, CSV, Parquet
         - DataImputer: Handle missing values
         - XGBoostRegressor: Train XGBoost model
-        - FeatureSelector: Recursive feature elimination
+        - ProcessParameterOptimizer: Black-box optimization
         """
         
-        @property
-        @abstractmethod
-        def input_ports(self) -> list[Port]:
-            """Define expected inputs with types."""
-            pass
-        
-        @property
-        @abstractmethod
-        def output_ports(self) -> list[Port]:
-            """Define outputs with types."""
-            pass
+        def set_settings(self, settings: dict) -> None:
+            """Configure block parameters."""
+            ...
         
         @abstractmethod
-        def run(self, **inputs) -> dict[str, Any]:
+        def execute(self) -> None:
             """
             Execute the block's computation.
             
-            MUST be stateless: same inputs always produce same outputs.
+            Reads from inlet ports, performs computation,
+            writes to outlet ports. MUST be stateless.
             """
             pass
+        
+        def create_ports(self) -> None:
+            """Initialize inlet and outlet ports."""
+            ...
+        
+        def add_inlet_port(self, port_name: str, port_type: type) -> None:
+            """Register a new input port."""
+            ...
+        
+        def add_outlet_port(self, port_name: str, port_type: type) -> None:
+            """Register a new output port."""
+            ...
+        
+        def get_inlets(self) -> dict[str, BuildingBlockPortInlet]:
+            """Return all inlet ports."""
+            ...
+        
+        def get_outlets(self) -> dict[str, BuildingBlockPortOutlet]:
+            """Return all outlet ports."""
+            ...
+        
+        def attach_pipeline_manager(self, pipeline_manager: 'PipelineManager') -> None:
+            """Connect block to the pipeline manager for resource access."""
+            ...
 
 
-    class DataImputer(BuildingBlock):
+    class BuildingBlockExecutor(ABC):
         """
-        Handles missing values in tabular data.
+        Abstract executor for Building Block lifecycle management.
         
-        Strategies:
-        - mean: Replace with column mean
-        - median: Replace with column median
-        - mode: Replace with most frequent value
-        - constant: Replace with specified value
+        Wraps block execution with telemetry, error handling,
+        and resource management.
         """
         
-        def __init__(self, strategy: str = "mean", fill_value: float = None):
-            self.strategy = strategy
-            self.fill_value = fill_value
+        def set_settings(self, settings: dict) -> None:
+            """Configure executor parameters."""
+            ...
         
-        @property
-        def input_ports(self) -> list[Port]:
-            return [
-                Port("data", pd.DataFrame, "Input dataframe with missing values"),
-                Port("columns", list, "Columns to impute", required=False)
-            ]
+        def set_input_data(self, inputs: dict) -> None:
+            """Populate inlet ports with input data."""
+            ...
         
-        @property
-        def output_ports(self) -> list[Port]:
-            return [
-                Port("data", pd.DataFrame, "Dataframe with imputed values"),
-                Port("statistics", dict, "Imputation statistics")
-            ]
+        def set_output_data(self, name: str, value: Any) -> None:
+            """Write result to an outlet port."""
+            ...
         
-        def run(self, data: pd.DataFrame, columns: list = None) -> dict:
+        def set_bb_execution_status(self, status: int) -> None:
+            """Update execution status for monitoring."""
+            ...
+        
+        def get_info_obj(self) -> 'BuildingBlockInformationWithPorts':
+            """Return complete block information including port states."""
+            ...
+
+
+    class LocalBuildingBlockExecutor(BuildingBlockExecutor):
+        """
+        Concrete executor for local, in-process execution.
+        
+        Executes the building block in the current process,
+        managing input/output data transfer through ports.
+        """
+        
+        def run(self) -> None:
             """
-            Impute missing values in the dataframe.
+            Execute the wrapped Building Block.
             
-            Returns the imputed data and statistics about what was filled.
+            1. Validate inputs are present on all required inlet ports
+            2. Call block.execute()
+            3. Capture outputs from outlet ports
+            4. Record telemetry (duration, status)
+            5. Handle any exceptions with proper error reporting
             """
-            # Implementation of imputation logic
+            ...
+
+**Interactive Visualization Support**
+
+Building Blocks can optionally support interactive visualization during development and debugging:
+
+.. code-block:: python
+
+    class AbstractInteractiveGUI(ABC):
+        """
+        Base class for interactive Building Block interfaces.
+        
+        Enables real-time visualization of block execution,
+        useful for debugging and development.
+        """
+        port: int
+        endpoint: str
+        settings_GUI: dict
+        inputs_name: list
+        inputs: dict
+        settings: dict
+        
+        event_lock: threading.Event
+        building_block: BuildingBlock
+        app: object  # Panel/Bokeh application
+        
+        @abstractmethod
+        def run_interactive_gui(self) -> None:
+            """Launch the interactive interface."""
+            pass
+        
+        def show_layout(self) -> None:
+            """Render the visualization layout."""
+            ...
+        
+        def terminate(self) -> None:
+            """Shutdown the interactive interface."""
+            ...
+
+
+    class Visualizer(ABC):
+        """
+        Abstract base for data visualization components.
+        
+        Used by Building Blocks that produce visual outputs
+        (charts, plots, dashboards).
+        """
+        visualizer_module: str
+        visualizer_class: str
+        endpoint: str
+        port: int
+        input_name: dict
+        input_dict: dict
+        visualizer: object
+        app: object
+        
+        @abstractmethod
+        def run_interactive_gui(self) -> None:
+            """Start the visualization server."""
+            pass
+        
+        def show_visualizer(self) -> None:
+            """Display the visualization."""
+            ...
+        
+        def terminate(self) -> None:
+            """Shutdown the visualization server."""
             ...
 
 .. tip::
 
    **Why this pattern?** The Building Block abstraction enables:
    
-   - **Composability**: Blocks can be freely combined into pipelines
-   - **Testability**: Each block can be unit tested in isolation
-   - **Reusability**: Same block serves multiple use cases
-   - **Discoverability**: Ports document the block's contract
+   - **Composability**: Blocks can be freely combined into pipelines via type-safe ports
+   - **Testability**: Each block can be unit tested in isolation with mock port data
+   - **Reusability**: Same block serves multiple use cases across different pipelines
+   - **Discoverability**: ``BuildingBlockDataStructure`` provides rich metadata for UI rendering
+   - **Debuggability**: Interactive GUI support allows real-time inspection during development
 
 Layer 4: Resource Pool — Configuration & Static Assets
 ======================================================
 
 The Resource Pool is a **standalone microservice** responsible for serving configuration files, metadata, and static content.
 
-**Architecture**
+.. figure:: ecoki_architecture_files/uml_diagrams/resource_pool.png
+   :alt: Resource Pool UML Class Diagram - ResourcePoolShell and specialized routers
+   :align: center
+   :width: 100%
+   :figclass: align-center
 
-.. code-block:: text
+   **Resource Pool Service Architecture**: The ``ResourcePoolShell`` composes three specialized routers: ``PipelinePoolRouter`` for pipeline templates and metadata, ``BuildingBlockPoolRouter`` for block definitions and configurations, and ``StaticResourcesPoolRouter`` for success stories and energy efficiency scenarios.
 
-    ┌─────────────────────────────────────────────┐
-    │            Resource Pool Service            │
-    ├─────────────────────────────────────────────┤
-    │  ┌─────────────────────────────────────┐   │
-    │  │       Resource Pool Router          │   │
-    │  │          (API Router)               │   │
-    │  └─────────────────────────────────────┘   │
-    │                    │                        │
-    │  ┌─────────┬───────┴───────┬───────────┐  │
-    │  │ Config  │   Metadata    │  Static   │  │
-    │  │  Files  │   (Block      │  Content  │  │
-    │  │ (JSON/  │ descriptions) │ (Success  │  │
-    │  │  YAML)  │               │  Stories) │  │
-    │  └─────────┴───────────────┴───────────┘  │
-    └─────────────────────────────────────────────┘
+The Resource Pool follows the same compositional pattern as the Backend layer, with ``ResourcePoolShell`` aggregating domain-specific routers. This architectural consistency simplifies understanding and maintenance across the codebase.
 
 **Storage Containers**
 
@@ -577,6 +941,82 @@ Non-code assets including:
 - Success stories and case studies
 - Energy efficiency scenario templates
 - Documentation and help content
+
+**Resource Pool API Structure**
+
+The Resource Pool exposes its functionality through specialized routers:
+
+.. code-block:: python
+
+    class ResourcePoolShell:
+        """
+        Main entry point for the Resource Pool service.
+        
+        Composes domain-specific routers and manages the FastAPI application.
+        """
+        hostname: str
+        port: int
+        app: FastAPI
+        api_prefix: str
+        
+        def include_routers(self) -> None:
+            """Register all routers with the FastAPI app."""
+            ...
+        
+        def run(self) -> None:
+            """Start the Resource Pool server."""
+            ...
+
+
+    class PipelinePoolRouter:
+        """Serves pipeline templates and metadata."""
+        router: APIRouter
+        
+        def get_pipeline_list(self) -> list[str]:
+            """List all available pipeline templates."""
+            ...
+        
+        def get_pipeline_type(self, pipeline_id: str) -> str:
+            """Get pipeline execution mode (local/loop)."""
+            ...
+        
+        def get_pipeline_content(self, pipeline_id: str) -> dict:
+            """Return full pipeline topology definition."""
+            ...
+        
+        def add_custom_pipeline(self, pipeline: dict) -> bool:
+            """Register a user-created pipeline template."""
+            ...
+
+
+    class BuildingBlockPoolRouter:
+        """Serves Building Block definitions and documentation."""
+        router: APIRouter
+        
+        def get_building_blocks_list(self) -> list[dict]:
+            """List all available Building Blocks."""
+            ...
+        
+        def get_bb_config_meta_data(self, block_id: str) -> dict:
+            """Get block configuration schema."""
+            ...
+        
+        def create_bb_json_for_drag_and_drop(self, block_id: str) -> dict:
+            """Generate JSON for frontend drag-and-drop interface."""
+            ...
+
+
+    class StaticResourcesPoolRouter:
+        """Serves static content and documentation."""
+        router: APIRouter
+        
+        def get_success_stories_resources(self) -> list[dict]:
+            """List available success story documents."""
+            ...
+        
+        def get_energy_efficiency_scenarios_resources(self) -> list[dict]:
+            """List energy optimization scenario templates."""
+            ...
 
 **Why a Standalone Service?**
 
@@ -804,20 +1244,35 @@ Every architecture involves trade-offs. Here are the key decisions we made and t
 
 *Mitigation*: Critical paths optimized with Cython/Numba; frontend offloads computation to backend.
 
+**Trade-off 5: Dual Execution Modes (Batch vs. Streaming)**
+
+*Decision*: Support both ``LocalPipelineExecutor`` (batch) and ``LoopPipelineExecutor`` (streaming) modes.
+
+*Benefit*: Flexibility to handle diverse industrial use cases:
+
+- **Batch mode**: Training pipelines, historical data analysis, one-time preprocessing
+- **Streaming mode**: Real-time sensor monitoring, live predictions, continuous optimization
+
+*Cost*: Increased complexity in executor management; some blocks must be designed to handle both modes.
+
+*Implementation*: The ``execution_mode`` parameter in ``PipelineManager.add_pipeline()`` determines which executor type is instantiated. The ``LoopPipelineExecutor.loop_signal`` flag enables graceful shutdown of streaming pipelines.
+
 Conclusion
 ==========
 
 The EcoKI architecture demonstrates how thoughtful system design can enable complex ML capabilities while maintaining accessibility for non-expert users. The key takeaways are:
 
-1. **Layer Separation**: Clear boundaries between presentation, orchestration, execution, configuration, and data layers enable independent evolution.
+1. **Layer Separation**: Clear boundaries between presentation, orchestration, execution, configuration, and data layers enable independent evolution and scaling.
 
-2. **Stateless Computation**: The Building Block pattern, combined with the Executor pattern, provides a powerful abstraction for composable ML workflows.
+2. **Stateless Computation with Typed Ports**: The Building Block pattern enforces statelessness while the Port system (``BuildingBlockPortInlet``, ``BuildingBlockPortOutlet``) ensures type-safe data flow between components.
 
-3. **Protocol Standardization**: REST APIs with JSON payloads and well-defined schemas create clear contracts between components.
+3. **Executor Abstraction**: Separating *what* to compute (Building Blocks) from *how* to execute (Executors) enables both batch (``LocalPipelineExecutor``) and streaming (``LoopPipelineExecutor``) modes with the same block implementations.
 
-4. **Industrial Pragmatism**: The architecture accommodates real-world constraints like on-premise deployment, diverse industrial protocols, and data sovereignty requirements.
+4. **Strategy Patterns Throughout**: From ``TopologyProvider`` for loading pipeline definitions to the router composition pattern in both Backend and Resource Pool, the architecture favors composition and strategy patterns over inheritance.
 
-Building a production ML platform is as much about software engineering as it is about machine learning. The abstractions you choose early, the patterns you establish, and the trade-offs you make consciously will determine your system's long-term viability.
+5. **Industrial Pragmatism**: The architecture accommodates real-world constraints like on-premise deployment, diverse industrial protocols, data sovereignty requirements, and the need for interactive debugging during development.
+
+Building a production ML platform is as much about software engineering as it is about machine learning. The abstractions you choose early—stateless blocks, typed ports, executor hierarchies—and the trade-offs you make consciously will determine your system's long-term viability and extensibility.
 
 .. epigraph::
 
