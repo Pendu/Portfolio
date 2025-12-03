@@ -76,6 +76,26 @@ html_theme_options = {
     "show_nav_level": 1,
     "show_toc_level": 1,
     "navbar_align": "left",
+    # External links appear as tabs in the navigation bar
+    "external_links": [
+        {
+            "name": "RAG & LLMs",
+            "url": "https://pendu.github.io/Advanced-Retreival-and-Re-ranking/",
+        },
+    ],
+    # Add icons to the navbar
+    "icon_links": [
+        {
+            "name": "GitHub",
+            "url": "https://github.com/Pendu",
+            "icon": "fa-brands fa-github",
+        },
+        {
+            "name": "LinkedIn",
+            "url": "https://www.linkedin.com/in/abhijeet-pendyala-3ba00942/",
+            "icon": "fa-brands fa-linkedin",
+        },
+    ],
 }
 
 # -- Options for bibtex ----------------------------------------

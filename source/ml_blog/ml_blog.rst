@@ -1,7 +1,7 @@
 .. _ml_blog:
 
-Blog
-========
+ML Blog
+=======
 
 Welcome to my machine learning blog! Here you'll find in-depth articles on various ML topics, from fundamental concepts to advanced techniques.
 
@@ -41,6 +41,22 @@ Welcome to my machine learning blog! Here you'll find in-depth articles on vario
    **Published:** December 2025 | **Reading Time:** 12-15 minutes
    
    Lessons from designing a low-code ML platform for industrial IoT. Explore the five-layer architecture, key design patterns (Strategy, Composition over Inheritance), and the trade-offs involved in building production-grade systems that balance power with accessibility.
+
+**Featured Resource: LLM & RAG Systems**
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. note::
+
+   🔗 `Advanced Retrieval and Re-ranking <https://pendu.github.io/Advanced-Retreival-and-Re-ranking/>`_
+   
+   A comprehensive documentation site covering the latest research and practical techniques for building RAG (Retrieval-Augmented Generation) systems. Topics include:
+   
+   - **Two-Stage Pipeline Architecture** — Retrieval for candidate selection, re-ranking for precision
+   - **Building RAG Pipelines** — From MVP to production-ready systems
+   - **Hard Negative Mining** — Advanced techniques for training dense retrievers
+   - **Cross-Encoders & LLM Re-rankers** — State-of-the-art re-ranking methods
+   - **30+ Library Comparisons** — LangChain, LlamaIndex, ColBERT, and more
+   - **Benchmarks & Datasets** — BEIR, MS MARCO, Natural Questions
 
 **Upcoming Posts**
 ~~~~~~~~~~~~~~~~~~

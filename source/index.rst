@@ -87,12 +87,16 @@ My path through the world of science and AI has been computationally irreducible
 
 ------------------
 
+**Resources & Documentation**
+============================
+
+* 📄 Download my CV: `Abhijeet Pendyala - CV.pdf <https://github.com/Pendu/Portfolio/blob/main/source/CV_aug_2025.pdf>`_
+* 📕 Download my PhD thesis: `PhD Thesis - Abhijeet Pendyala.pdf <https://github.com/Pendu/Portfolio/blob/main/source/Phd_thesis_Abhijeet_Pendyala.pdf>`_
+* ✍️ Read my blog: `ML Blog <ml_blog/ml_blog.html>`_
+* 🔍 **NEW:** `Advanced Retrieval & Re-ranking <https://pendu.github.io/Advanced-Retreival-and-Re-ranking/>`_ — Comprehensive guide to RAG systems, dense retrieval, and LLM re-rankers
+
 **Get in Touch**
 ===============
-
-* Download my CV in PDF format: `Abhijeet Pendyala - CV.pdf <https://github.com/Pendu/Portfolio/blob/main/source/CV_aug_2025.pdf>`_
-* Download my PhD thesis: `PhD Thesis - Abhijeet Pendyala.pdf <https://github.com/Pendu/Portfolio/blob/main/source/Phd_thesis_Abhijeet_Pendyala.pdf>`_
-* Read my blog: `ML Blog <ml_blog/ml_blog.html>`_
 
 
 .. raw:: html
