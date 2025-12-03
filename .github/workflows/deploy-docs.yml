@@ -5,10 +5,13 @@
 # to GitHub Pages whenever changes are pushed to the main branch.
 #
 # Workflow Overview:
-#   1. Triggers on push to main branch (or manual dispatch)
+#   1. Triggers on ANY push to main branch (or manual dispatch)
 #   2. Sets up Python environment with required dependencies
 #   3. Builds Sphinx HTML documentation
 #   4. Deploys the built HTML to GitHub Pages
+#
+# Note: We intentionally removed the 'paths' filter to ensure every push
+# triggers a rebuild. This prevents issues where new files don't get deployed.
 #
 # Prerequisites:
 #   - Enable GitHub Pages in repository settings
@@ -22,16 +25,10 @@ name: Deploy Sphinx Documentation to GitHub Pages
 # Trigger Configuration
 # ------------------------------------------------------------------------------
 on:
-  # Trigger on push to the main branch
+  # Trigger on ANY push to main (simpler, more reliable)
   push:
     branches:
       - main
-    # Only trigger when documentation-related files change
-    paths:
-      - 'source/**'           # Source documentation files (.rst, .md, images, etc.)
-      - 'requirements.txt'    # Python dependencies
-      - 'conf.py'             # Sphinx configuration (if at root)
-      - '.github/workflows/deploy-docs.yml'  # This workflow file
 
   # Allow manual trigger from the Actions tab in GitHub
   workflow_dispatch:
