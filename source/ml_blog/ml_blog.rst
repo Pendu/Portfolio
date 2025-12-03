@@ -16,7 +16,7 @@ Welcome to my machine learning blog! Here you'll find in-depth articles on vario
    climbing_the_ladder
    assumptions_in_machine_learning
    inductive_biases_in_machine_learning
-   ecoki_system_design
+   ecoki_system_design_public
    
 
 **Article Details**
