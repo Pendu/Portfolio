@@ -37,10 +37,10 @@ Welcome to my machine learning blog! Here you'll find in-depth articles on vario
    
    Explore how inductive biases shape machine learning models and influence their learning capabilities. Understand the trade-offs between different architectural choices and how they affect model performance.
 
-:doc:`ecoki_system_design`
+:doc:`ecoki_system_design_public`
    **Published:** December 2025 | **Reading Time:** 20-25 minutes
    
-   A deep technical dive into the EcoKI low-code ML platform architecture. Explore the layered microservices design, the stateless Building Block pattern, the Executor pattern for lifecycle management, and the trade-offs made when building production-grade ML systems for industrial IoT applications.
+   A dive into the EcoKI low-code ML platform architecture. Explore the layered microservices design, the stateless Building Block pattern, the Executor pattern for lifecycle management, and the trade-offs made when building production-grade ML systems for industrial IoT applications.
 
 **Upcoming Posts**
 ~~~~~~~~~~~~~~~~~~
