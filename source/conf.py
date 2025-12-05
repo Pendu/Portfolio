@@ -100,3 +100,8 @@ html_theme_options = {
 
 # -- Options for bibtex ----------------------------------------
 bibtex_bibfiles = ["refs.bib"]
+
+# -- Custom Domain for GitHub Pages -----------------------------
+# Include the CNAME file in the root of the built documentation
+# This tells GitHub Pages to use the custom domain
+html_extra_path = ['CNAME']
