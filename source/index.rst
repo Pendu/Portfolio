@@ -62,7 +62,7 @@ Featured Publications
 
   *S. Qaadan, A. Pendyala et al.*, **ICPRAM 2020**
 
-ML Software Engineering: EcoKI Platform
+ML Platform Architecture & MLOps: EcoKI Platform
 ---------------------------------------
 My work on the EcoKI project focused on designing core architectural frameworks for a low-code ML platform. I was responsible for:
 
@@ -90,7 +90,7 @@ My path through the world of science and AI has been computationally irreducible
 **Resources & Documentation**
 ============================
 
-* 📄 Download my CV: `Abhijeet Pendyala - CV.pdf <https://github.com/Pendu/Portfolio/blob/main/source/CV_aug_2025.pdf>`_
+* 📄 Download my CV: `Abhijeet Pendyala - CV.pdf <https://github.com/Pendu/Portfolio/blob/main/source/CV_Abhijeet_Pendyala_work_ex_divisions_Portfolio.pdf>`_
 * 📕 Download my PhD thesis: `PhD Thesis - Abhijeet Pendyala.pdf <https://github.com/Pendu/Portfolio/blob/main/source/Phd_thesis_Abhijeet_Pendyala.pdf>`_
 * ✍️ Read my blog: `ML Blog <ml_blog/ml_blog.html>`_
 * 🔍 **NEW:** `Advanced Retrieval & Re-ranking <https://pendu.github.io/Advanced-Retreival-and-Re-ranking/>`_ — Comprehensive guide to RAG systems, dense retrieval, and LLM re-rankers
