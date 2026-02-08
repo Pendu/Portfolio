@@ -14,10 +14,9 @@ The problem of optimal decision-making under uncertainty is the dark matter of a
 
 This post aims to strip away the terminological divergence and deconstruct the field into its first principles. We will look at the problem through the lens of the Markov Decision Process (MDP), not just as a formalism, but as a *map*. By classifying algorithms based on their *access* to this map and the *scope* of their solutions, we can build a unified taxonomy that connects classical Planning to modern Deep Reinforcement Learning.
 
----
 
 1. The Substrate: The Markov Decision Process
-=============================================
+==============================================
 
 At the heart of the problem lies the **agent-environment loop** [Sutton & Barto, 2018]. At every timestep :math:`t`, an agent observes a state :math:`s_t`, selects an action :math:`a_t`, and receives a reward :math:`r_{t+1}` and a new state :math:`s_{t+1}`. The goal is simple but computationally explosive: construct a strategy (a **policy**, :math:`\pi`) that maximizes the expected sum of future rewards.
 
@@ -58,10 +57,10 @@ We can map the entire field of Control onto these quadrants:
 
 This matrix is the conceptual backbone of the entire field. Every algorithm you encounter lives in one of these quadrants.
 
----
+
 
 2. The Objective and the Philosophy of Discounting
-==================================================
+===================================================
 
 The agent's goal is to maximize the expected return :math:`J(\pi)`. But defining "return" requires a nuance: the **Discount Factor**, :math:`\gamma \in [0, 1]`.
 
@@ -76,7 +75,7 @@ While :math:`\gamma` is often treated as a mathematical trick to ensure infinite
 
 This introduces a fundamental trade-off: Higher :math:`\gamma` allows for complex, long-horizon strategies, but it drastically increases the **variance** of the learning signal, as the return now depends on highly uncertain future events.
 
----
+
 
 3. The Mechanics: Value and Bellman Equations
 =============================================
@@ -116,8 +115,6 @@ However, optimal control requires us to find the *best* action. We replace the e
    1. **Simultaneity:** Every state's value depends on every other state's value, creating a complex web of dependencies.
    2. **Non-Linearity:** The :math:`\max` operator breaks the linear structure. We can no longer simply "solve" the equation using linear algebra; we must find the solution **iteratively**.
 
----
-
 4. The Engine: Generalized Policy Iteration (GPI)
 ==================================================
 
@@ -132,7 +129,7 @@ Almost all RL and Planning algorithms are instantiations of a single meta-algori
 
 The **Policy Improvement Theorem** guarantees that if we act greedily with respect to the true values of our current policy, the new policy is strictly better (or equal, if optimal). The algorithms below are just different ways to turn this crank.
 
----
+
 
 5. The Blockade: The Three Curses of Dynamic Programming
 ========================================================
@@ -160,7 +157,7 @@ If we have a perfect model (Reversible Access), we can use **Dynamic Programming
      - Tables cannot generalize
      - **Function Approximation** (neural networks)
 
----
+
 
 6. The Evolution: Model-Free Learning
 ======================================
@@ -208,7 +205,7 @@ How do we explore while trying to optimize?
 
 This allows for learning from historical data, but is notoriously unstable when combined with approximation.
 
----
+
 
 7. The Deep Synthesis
 =====================
@@ -258,7 +255,7 @@ This motivates **Trust Region methods**, which constrain the update to ensure th
 
 This architecture — an Actor-Critic setup guarded by PPO's clipped objective — represents the current culmination of the field. It is the robust answer to the three curses, balancing bias, variance, and stability to solve the problem of agency in complex worlds.
 
----
+
 
 References
 ==========
