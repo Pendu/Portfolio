@@ -17,6 +17,7 @@ Welcome to my machine learning blog! Here you'll find in-depth articles on vario
    assumptions_in_machine_learning
    inductive_biases_in_machine_learning
    ecoki_system_design_public
+   RL_prime
    
 
 **Article Details**
@@ -42,6 +43,11 @@ Welcome to my machine learning blog! Here you'll find in-depth articles on vario
    
    Lessons from designing a low-code ML platform for industrial IoT. Explore the five-layer architecture, key design patterns (Strategy, Composition over Inheritance), and the trade-offs involved in building production-grade systems that balance power with accessibility.
 
+:doc:`RL_prime`
+   **Published:** February 2026 | **Reading Time:** 15-20 minutes
+   
+   A first-principles deconstruction of optimal control — from MDPs and Bellman equations through Dynamic Programming's three curses to Deep RL's Actor-Critic and PPO solutions. Unifies Planning and Reinforcement Learning as regions on a continuous spectrum of information access.
+
 **Featured Resource: LLM & RAG Systems**
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -61,7 +67,7 @@ Welcome to my machine learning blog! Here you'll find in-depth articles on vario
 **Upcoming Posts**
 ~~~~~~~~~~~~~~~~~~
 
-* **Reinforcement Learning Fundamentals** - From Q-learning to policy gradients
+* **Reinforcement Learning Part II** - From reward shaping to curriculum learning and multi-agent RL
 * **Production ML Systems** - Deployment, monitoring, and maintenance strategies
 
 
